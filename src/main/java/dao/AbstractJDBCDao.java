@@ -131,6 +131,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
     
     public T persist(T object) throws PersistException {
         T persistInstance;
+        int id = -1;
         
         // Добавляем запись
         String sql = getCreateQuery();
@@ -140,7 +141,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
         log.debug("Open connection");
         try (Connection connection = daoFactory.getConnection()) {
         	log.debug("Create prepared statement");
-        	PreparedStatement statement = connection.prepareStatement(sql);
+        	PreparedStatement statement = connection.prepareStatement(sql, new String[] {"id"});
         	prepareStatementForInsert(statement, object);
         	
         	log.debug("Get count of inserted result set");
@@ -152,11 +153,19 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	        	throw new PersistException(s + count);
 	        }	        	
 	         
+	        ResultSet gk = statement.getGeneratedKeys();
+	        if(gk.next()) {
+	            // Получаем поле id
+	            id = gk.getInt("id");
+	        }
+	        
 	        log.debug("statement closed");
 	        statement.close();
 	        
+	        persistInstance = getByPK(id);
+	        /*
 	        // Получаем только что вставленную запись
-	        sql = getSelectQuery() + " WHERE id = last_insert_rowid();";
+	        sql = getSelectQuery() + " WHERE id = " + id + ";";
         
 	        log.debug("Create prepared statement");
 	        statement = connection.prepareStatement(sql);
@@ -168,8 +177,12 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
             	log.error(s);
                 throw new PersistException(s);
             }
+            
+           
             persistInstance = list.iterator().next();
         
+         */
+	        
         log.debug("connection closed");
         } catch (Exception e) {
         	log.debug("connection closed");
@@ -369,7 +382,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	 * INSERT INTO PROFESSORS_COURSES (professor_id, course_id) VALUES (?, ?);
 	 *  
 	 */
-	private String getInsertDependentObjQuery(Class<?> K1, Class<?> T) {		
+	public String getInsertDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "INSERT INTO " + K1.getSimpleName() + "s_" 
 				+ T.getSimpleName() + "s (" + K1.getSimpleName() + "_id, " + T.getSimpleName() + "_id) VALUES (?, ?);";
 	}
@@ -380,7 +393,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	 * INSERT INTO PROFESSORS_COURSES (professor_id, course_id) VALUES (?, ?);
 	 *  
 	 */
-	private String getDeleteDependentObjQuery(Class<?> K1, Class<?> T) {		
+	public String getDeleteDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "DELETE FROM " + K1.getSimpleName() + "s_"  + T.getSimpleName() + "s WHERE " 
 				+ K1.getSimpleName() + "_id=? AND " + T.getSimpleName() + "_id=? ;";
 	}
@@ -391,7 +404,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	 * SELECT dependentObj_id FROM [FK_Table] WHERE Instance_id = ?;
 	 *  
 	 */    
-	private String getSelectDependentObjQuery(Class<?> K1, Class<?> T){
+	public String getSelectDependentObjQuery(Class<?> K1, Class<?> T){
 		return "SELECT " + K1.getSimpleName() + "_id FROM " + K1.getSimpleName() + "s_" 
 						+ T.getSimpleName() + "s WHERE " + T.getSimpleName() + "_id = ?";
 	}
