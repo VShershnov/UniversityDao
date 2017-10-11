@@ -1,25 +1,19 @@
-package test.java.university;
+package test.java.com.foxminded.university;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.schedule.CourseSchedule;
-import main.java.schedule.DailyScheduleForProfessor;
-import main.java.schedule.DailyScheduleForStudent;
-import main.java.schedule.MonthlyScheduleForProfessor;
-import main.java.schedule.MonthlyScheduleForStudent;
-import main.java.schedule.RoomSchedule;
-import main.java.schedule.Schedule;
-import main.java.schedule.ScheduleSlot;
-import main.java.schedule.TimeUnit;
-import main.java.university.Course;
-import main.java.university.Group;
-import main.java.university.Room;
-import main.java.university.University;
-import main.java.university.person.Professor;
-import main.java.university.person.Student;
+import main.java.com.foxminded.schedule.Schedule;
+import main.java.com.foxminded.schedule.ScheduleSlot;
+import main.java.com.foxminded.schedule.TimeUnit;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.university.University;
+import main.java.com.foxminded.university.person.Professor;
+import main.java.com.foxminded.university.person.Student;
 
 import org.junit.After;
 import org.junit.Before;
@@ -72,10 +66,11 @@ public class UniversityTest {
 		int i=0;
 		for (int d=1; d<31; d++){
 			for (int t=9; t<21; t++){
-				sheduleSlots.add(new ScheduleSlot(i++, room1, new TimeUnit(d,t)));
+				sheduleSlots.add(new ScheduleSlot(i++, room1, new TimeUnit(d,t,1)));
 			}
 		}
-		schedule = new Schedule(1, sheduleSlots);
+		schedule = new Schedule(sheduleSlots);
+		university.setAllSchedule(schedule);
 	}
 	
 	@After
@@ -182,18 +177,7 @@ public class UniversityTest {
 		university.addStudent(null);
 		assertEquals(0, university.getAllStudents().size());
 	}
-
-	@Test
-	public void testAddSchedule01() {
-		university.addSchedule(schedule);
-		assertEquals(1, university.getAllSchedules().size());
-	}
-
-	@Test
-	public void testAddSchedule02() {
-		university.addSchedule(null);
-		assertEquals(0, university.getAllSchedules().size());
-	}
+	
 
 	
 	@Test
@@ -418,30 +402,14 @@ public class UniversityTest {
 		university.addStudent(st1, gr1);
 		university.addCourseToGroup(math, gr1);
 		
-		sheduleSlots.get(353).addGroup(gr1);
-		sheduleSlots.get(352).addGroup(gr1);
-		sheduleSlots.get(353).setCourse(math);
-			
-		Schedule dayStudentSchedule = new DailyScheduleForStudent(3, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule);
+		sheduleSlots.get(353).setGroup(gr1);
+		sheduleSlots.get(352).setGroup(gr1);
+		sheduleSlots.get(353).setCourse(math);			
 		
-		MonthlyScheduleForStudent monthStudentSchedule = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule);
-		university.addSchedule(monthStudentSchedule);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
+		Schedule dayStudentSchedule = schedule.getDailyScheduleForStudent(30, st1);		
+		Schedule monthStudentSchedule = schedule.getMonthlyScheduleForStudent(1, st1);
+		assertEquals(2, dayStudentSchedule.getScheduleSlots().size());
+		assertEquals(2, monthStudentSchedule.getScheduleSlots().size());
 		
 		university.removeGroup(gr1);
 		
@@ -450,10 +418,11 @@ public class UniversityTest {
 		assertEquals(null, university.getStudent(st1).getGroup());
 		assertEquals(0, university.getCourse(math).getGroups().size());
 		
-		assertEquals(null, university.getSchedule(dayStudentSchedule));
-		assertEquals(null, university.getSchedule(monthStudentSchedule));		
-		assertEquals(0, ((CourseSchedule)university.getSchedule(courseSchedule)).getCourse().getGroups().size());
-		assertEquals(0, ((CourseSchedule)university.getSchedule(courseSchedule)).getScheduleSlot(sheduleSlots.get(353)).getCourse().getGroups().size());				
+		dayStudentSchedule = university.getAllSchedule().getDailyScheduleForStudent(30, st1);		
+		monthStudentSchedule = university.getAllSchedule().getMonthlyScheduleForStudent(1, st1);
+		
+		assertEquals(0, dayStudentSchedule.getScheduleSlots().size());
+		assertEquals(0, monthStudentSchedule.getScheduleSlots().size());
 	}
 	
 	@Test
@@ -461,30 +430,9 @@ public class UniversityTest {
 		university.addStudent(st1, gr1);
 		university.addCourseToGroup(math, gr1);
 		
-		sheduleSlots.get(353).addGroup(gr1);
-		sheduleSlots.get(352).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
+		sheduleSlots.get(352).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
-			
-		Schedule dayStudentSchedule = new DailyScheduleForStudent(3, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule);
-		
-		MonthlyScheduleForStudent monthStudentSchedule = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule);
-		university.addSchedule(monthStudentSchedule);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
 		
 		university.removeGroup(gr2);
 		
@@ -493,11 +441,10 @@ public class UniversityTest {
 		assertEquals(1, university.getCourse(math).getGroups().size());
 		assertEquals(gr1, university.getStudent(st1).getGroup());
 		
-		assertEquals(dayStudentSchedule, university.getSchedule(dayStudentSchedule));
-		assertEquals(monthStudentSchedule, university.getSchedule(monthStudentSchedule));		
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule)).getCourse().getGroups().size());
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule)).getScheduleSlot(sheduleSlots.get(353)).getCourse().getGroups().size());				
+		assertEquals(2, university.getAllSchedule().getDailyScheduleForStudent(30, st1).getScheduleSlots().size());
+		assertEquals(2, university.getAllSchedule().getMonthlyScheduleForStudent(1, st1).getScheduleSlots().size());				
 	}
+	
 	
 	@Test
 	public void testRemoveProfessor() {
@@ -506,29 +453,13 @@ public class UniversityTest {
 		university.addCourseToGroup(math, gr1);
 		
 		sheduleSlots.get(353).setProfessor(prMath);
-		sheduleSlots.get(353).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
 		
-		Schedule dayProfessorSchedule = new DailyScheduleForProfessor(2, 1, prMath);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getProfessor().equals(prMath)){
-				dayProfessorSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayProfessorSchedule);
-		
-		MonthlyScheduleForProfessor monthProfessorSchedule = new MonthlyScheduleForProfessor(5, 1, prMath);
-		monthProfessorSchedule.addDailySchedule((DailyScheduleForProfessor) dayProfessorSchedule);
-		university.addSchedule(monthProfessorSchedule);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
+		Schedule dayProfessorSchedule = schedule.getDailyScheduleForProfessor(30, prMath);		
+		Schedule monthProfessorSchedule = schedule.getMonthlyScheduleForProfessor(1, prMath);		
+		assertEquals(1, dayProfessorSchedule.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule.getScheduleSlots().size());
 		
 		university.removeProfessor(prMath);
 		
@@ -537,16 +468,11 @@ public class UniversityTest {
 		assertEquals(0, university.getCourse(math).getProfessors().size());
 		assertEquals(0, university.getStudent(st1).getGroup().getCourse(math).getProfessors().size());
 		
-		assertEquals(null, university.getSchedule(monthProfessorSchedule));
-		assertEquals(null, university.getSchedule(dayProfessorSchedule));
+		dayProfessorSchedule = schedule.getDailyScheduleForProfessor(30, prMath);		
+		monthProfessorSchedule = schedule.getMonthlyScheduleForProfessor(1, prMath);	
 		
-		assertEquals(null, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getProfessor());
-		
-		assertEquals(0, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getCourse().getProfessors().size());
-		assertEquals(0, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getCourse().getProfessors().size());	
+		assertEquals(0, dayProfessorSchedule.getScheduleSlots().size());
+		assertEquals(0, monthProfessorSchedule.getScheduleSlots().size());
 	}
 
 		
@@ -558,44 +484,21 @@ public class UniversityTest {
 		university.addCourseToGroup(math, gr1);
 				
 		sheduleSlots.get(353).setProfessor(prMath);
-		sheduleSlots.get(353).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
 		sheduleSlots.get(352).setProfessor(prInfo);
-		sheduleSlots.get(352).addGroup(gr1);
+		sheduleSlots.get(352).setGroup(gr1);
 		sheduleSlots.get(352).setCourse(math);
 		
-		Schedule dayProfessorSchedule1 = new DailyScheduleForProfessor(2, 1, prMath);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getProfessor().equals(prMath)){
-				dayProfessorSchedule1.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayProfessorSchedule1);
+		Schedule dayProfessorSchedule1 = schedule.getDailyScheduleForProfessor(30, prMath);	
+		Schedule dayProfessorSchedule2 = schedule.getDailyScheduleForProfessor(30, prInfo);		
+		Schedule monthProfessorSchedule1 = schedule.getMonthlyScheduleForProfessor(1, prMath);	
+		Schedule monthProfessorSchedule2 = schedule.getMonthlyScheduleForProfessor(1, prInfo);
 		
-		Schedule dayProfessorSchedule2 = new DailyScheduleForProfessor(2, 1, prInfo);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getProfessor().equals(prInfo)){
-				dayProfessorSchedule2.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayProfessorSchedule2);
-		
-		MonthlyScheduleForProfessor monthProfessorSchedule1 = new MonthlyScheduleForProfessor(5, 1, prMath);
-		monthProfessorSchedule1.addDailySchedule((DailyScheduleForProfessor) dayProfessorSchedule1);
-		university.addSchedule(monthProfessorSchedule1);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
-		MonthlyScheduleForProfessor monthProfessorSchedule2 = new MonthlyScheduleForProfessor(5, 1, prInfo);
-		monthProfessorSchedule2.addDailySchedule((DailyScheduleForProfessor) dayProfessorSchedule2);
-		university.addSchedule(monthProfessorSchedule2);
-				
+		assertEquals(1, dayProfessorSchedule1.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule1.getScheduleSlots().size());
+		assertEquals(1, dayProfessorSchedule2.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule2.getScheduleSlots().size());
 		
 		university.removeProfessor(prInfo);
 		
@@ -605,23 +508,15 @@ public class UniversityTest {
 		assertEquals(1, university.getCourse(math).getProfessors().size());
 		assertEquals(1, university.getStudent(st1).getGroup().getCourse(math).getProfessors().size());
 		
-		assertEquals(monthProfessorSchedule1, university.getSchedule(monthProfessorSchedule1));
-		assertEquals(prMath, ((MonthlyScheduleForProfessor)university.getSchedule(monthProfessorSchedule1)).getProfessor());
-		assertEquals(null, university.getSchedule(monthProfessorSchedule2));
+		dayProfessorSchedule1 = schedule.getDailyScheduleForProfessor(30, prMath);	
+		dayProfessorSchedule2 = schedule.getDailyScheduleForProfessor(30, prInfo);		
+		monthProfessorSchedule1 = schedule.getMonthlyScheduleForProfessor(1, prMath);	
+		monthProfessorSchedule2 = schedule.getMonthlyScheduleForProfessor(1, prInfo);	
 		
-		assertEquals(dayProfessorSchedule1, university.getSchedule(dayProfessorSchedule1));
-		assertEquals(prMath, ((DailyScheduleForProfessor)university.getSchedule(dayProfessorSchedule1)).getProfessor());
-		assertEquals(null, university.getSchedule(dayProfessorSchedule2));
-		
-		assertEquals(prMath, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getProfessor());
-		assertEquals(null, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(352)).getProfessor());
-		
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getCourse().getProfessors().size());
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getCourse().getProfessors().size());	
+		assertEquals(1, dayProfessorSchedule1.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule1.getScheduleSlots().size());
+		assertEquals(0, dayProfessorSchedule2.getScheduleSlots().size());
+		assertEquals(0, monthProfessorSchedule2.getScheduleSlots().size());
 	}
 
 	@Test
@@ -631,30 +526,14 @@ public class UniversityTest {
 		university.addCourseToGroup(math, gr1);
 		
 		sheduleSlots.get(353).setProfessor(prMath);
-		sheduleSlots.get(353).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
 		
 		
-		Schedule dayProfessorSchedule = new DailyScheduleForProfessor(2, 1, prMath);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getProfessor().equals(prMath)){
-				dayProfessorSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayProfessorSchedule);
-		
-		MonthlyScheduleForProfessor monthProfessorSchedule = new MonthlyScheduleForProfessor(5, 1, prMath);
-		monthProfessorSchedule.addDailySchedule((DailyScheduleForProfessor) dayProfessorSchedule);
-		university.addSchedule(monthProfessorSchedule);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
+		Schedule dayProfessorSchedule = schedule.getDailyScheduleForProfessor(30, prMath);
+		Schedule monthProfessorSchedule = schedule.getMonthlyScheduleForProfessor(1, prMath);
+		assertEquals(1, dayProfessorSchedule.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule.getScheduleSlots().size());
 		
 		university.removeProfessor(prInfo);
 		
@@ -663,18 +542,11 @@ public class UniversityTest {
 		assertEquals(1, university.getCourse(math).getProfessors().size());
 		assertEquals(1, university.getStudent(st1).getGroup().getCourse(math).getProfessors().size());
 		
-		assertEquals(monthProfessorSchedule, university.getSchedule(monthProfessorSchedule));
-		assertEquals(prMath, ((MonthlyScheduleForProfessor)university.getSchedule(monthProfessorSchedule)).getProfessor());
-		assertEquals(dayProfessorSchedule, university.getSchedule(dayProfessorSchedule));
-		assertEquals(prMath, ((DailyScheduleForProfessor)university.getSchedule(dayProfessorSchedule)).getProfessor());
+		dayProfessorSchedule = schedule.getDailyScheduleForProfessor(30, prMath);		
+		monthProfessorSchedule = schedule.getMonthlyScheduleForProfessor(1, prMath);	
 		
-		assertEquals(prMath, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getProfessor());
-		
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getCourse().getProfessors().size());
-		assertEquals(1, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getCourse().getProfessors().size());	
+		assertEquals(1, dayProfessorSchedule.getScheduleSlots().size());
+		assertEquals(1, monthProfessorSchedule.getScheduleSlots().size());
 	}
 	
 	@Test
@@ -683,31 +555,15 @@ public class UniversityTest {
 		university.addCourseToGroup(math, gr1);
 		university.addProfessorToCourse(prMath, math);
 				
-		sheduleSlots.get(353).addGroup(gr1);
-		sheduleSlots.get(352).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);		
 		sheduleSlots.get(353).setCourse(math);
-		sheduleSlots.get(352).setCourse(java);
+		sheduleSlots.get(353).setProfessor(prMath);
 			
-		Schedule dayStudentSchedule = new DailyScheduleForStudent(3, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule);
+		Schedule dayStudentSchedule = schedule.getDailyScheduleForStudent(30, st1);
+		Schedule monthStudentSchedule = schedule.getMonthlyScheduleForStudent(1, st1);
 		
-		MonthlyScheduleForStudent monthStudentSchedule = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule);
-		university.addSchedule(monthStudentSchedule);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);
-		
+		assertEquals(math, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());
+		assertEquals(math, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());
 		
 		university.removeCourse(math);
 		
@@ -716,17 +572,13 @@ public class UniversityTest {
 		assertEquals(null, university.getProfessor(prMath).getCourse(math));
 		assertEquals(null, university.getStudent(st1).getGroup().getCourse(math));
 		
-		assertEquals(null, university.getSchedule(courseSchedule));
-		assertEquals(0, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
-				.getStudent().getGroup().getCourses().size());
-		assertEquals(0, ((MonthlyScheduleForStudent)university.getSchedule(monthStudentSchedule))
-				.getStudent().getGroup().getCourses().size());
-		
-		
-		assertEquals(null, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
+		assertEquals(null, university.getAllSchedule()
 				.getScheduleSlot(sheduleSlots.get(353)).getCourse());
-		assertEquals(0, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());		
+		assertEquals(null, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());
+		assertEquals(null, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());		
+		
+		assertEquals(0, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());
+		assertEquals(0, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());		
 	}
 
 	@Test
@@ -737,63 +589,37 @@ public class UniversityTest {
 		university.addProfessorToCourse(prMath, math);
 		university.addProfessorToCourse(prMath, java);
 				
-		sheduleSlots.get(352).addGroup(gr1);
+		sheduleSlots.get(352).setGroup(gr1);
 		sheduleSlots.get(352).setCourse(java);
 		sheduleSlots.get(352).setProfessor(prMath);
-		sheduleSlots.get(353).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
 		sheduleSlots.get(353).setProfessor(prMath);
 					
-		Schedule dayStudentSchedule = new DailyScheduleForStudent(3, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule);
-		
-		MonthlyScheduleForStudent monthStudentSchedule = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule);
-		university.addSchedule(monthStudentSchedule);
-		
-		CourseSchedule courseSchedule1 = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule1.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule1);
-		
-		CourseSchedule courseSchedule2 = new CourseSchedule(7, java);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(java)){
-				courseSchedule2.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule2);
+		Schedule dayStudentSchedule = schedule.getDailyScheduleForStudent(30, st1);
+		Schedule monthStudentSchedule = schedule.getMonthlyScheduleForStudent(1, st1);
 				
 		university.removeCourse(java);
 		
-		assertEquals(math, university.getCourse(math));
-		assertEquals(math, university.getGroup(gr1).getCourse(math));
-		assertEquals(math, university.getProfessor(prMath).getCourse(math));
-		assertEquals(math, university.getStudent(st1).getGroup().getCourse(math));
-		assertEquals(1, university.getStudent(st1).getGroup().getCourses().size());
+		assertEquals(1, university.getAllCourses().size());
+		assertEquals(1, university.getGroup(gr1).getCourses().size());
+		assertEquals(1, university.getProfessor(prMath).getCourses().size());
+		assertEquals(1, university.getStudent(st1).getGroup().getCourses().size());		
 		
-		assertEquals(courseSchedule1, university.getSchedule(courseSchedule1));
-		assertEquals(null, university.getSchedule(courseSchedule2));
+		assertEquals(null, university.getAllSchedule()
+				.getScheduleSlot(sheduleSlots.get(352)).getCourse());
+		assertEquals(null, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(352)).getCourse());
+		assertEquals(null, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(352)).getCourse());
+		assertEquals(1, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(352)).getProfessor().getCourses().size());
+		assertEquals(1, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(352)).getProfessor().getCourses().size());
 		
-		assertEquals(1, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
-				.getStudent().getGroup().getCourses().size());
-		assertEquals(1, ((MonthlyScheduleForStudent)university.getSchedule(monthStudentSchedule))
-				.getStudent().getGroup().getCourses().size());
-		
-		assertEquals(null, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule)).getScheduleSlot(sheduleSlots.get(352)).getCourse());	
-		assertEquals(math, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule)).getScheduleSlot(sheduleSlots.get(353)).getCourse());		
-						
-		assertEquals(1, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());
-	}
+		assertEquals(math, university.getAllSchedule()
+				.getScheduleSlot(sheduleSlots.get(353)).getCourse());
+		assertEquals(math, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());
+		assertEquals(math, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getCourse());
+		assertEquals(1, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());
+		assertEquals(1, monthStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getProfessor().getCourses().size());
+	}	
 	
 	
 	@Test
@@ -804,40 +630,20 @@ public class UniversityTest {
 		university.addCourseToGroup(math, gr1);
 		
 		sheduleSlots.get(353).setProfessor(prMath);
-		sheduleSlots.get(353).addGroup(gr1);
+		sheduleSlots.get(353).setGroup(gr1);
 		sheduleSlots.get(353).setCourse(math);
 				
-		Schedule dayStudentSchedule1 = new DailyScheduleForStudent(1, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule1.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule1);
+		Schedule dayStudentSchedule1 = schedule.getDailyScheduleForStudent(30, st1);
+		Schedule monthStudentSchedule1 = schedule.getMonthlyScheduleForStudent(1, st1);
+		Schedule dayStudentSchedule2 = schedule.getDailyScheduleForStudent(30, st2);
+		Schedule monthStudentSchedule2 = schedule.getMonthlyScheduleForStudent(1, st2);
 		
-		Schedule dayStudentSchedule2 = new DailyScheduleForStudent(2, 1, st2);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule2.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule2);
-		
-		MonthlyScheduleForStudent monthStudentSchedule1 = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule1.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule1);
-		university.addSchedule(monthStudentSchedule1);
-		
-		MonthlyScheduleForStudent monthStudentSchedule2 = new MonthlyScheduleForStudent(4, 1, st1);
-		monthStudentSchedule2.addDailySchedule((DailyScheduleForStudent) dayStudentSchedule2);
-		university.addSchedule(monthStudentSchedule2);
-		
-		CourseSchedule courseSchedule = new CourseSchedule(7, math);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getCourse().equals(math)){
-				courseSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(courseSchedule);		
+		assertEquals(1, dayStudentSchedule1.getScheduleSlots().size());
+		assertEquals(1, monthStudentSchedule1.getScheduleSlots().size());
+		assertEquals(1, dayStudentSchedule2.getScheduleSlots().size());
+		assertEquals(1, monthStudentSchedule2.getScheduleSlots().size());
+		assertEquals(2, university.getAllSchedule()
+				.getScheduleSlot(sheduleSlots.get(353)).getGroup().getStudents().size());
 		
 		university.removeStudent(st1);
 		
@@ -846,76 +652,38 @@ public class UniversityTest {
 		assertEquals(null, university.getGroup(gr1).getCourse(math).getGroup(gr1).getStudent(st1));
 		assertEquals(null, university.getCourse(math).getGroup(gr1).getStudent(st1));		
 		
-		assertEquals(null, university.getSchedule(monthStudentSchedule1));
-		assertEquals(null, university.getSchedule(dayStudentSchedule1));
-		assertEquals(dayStudentSchedule2, university.getSchedule(dayStudentSchedule2));
+		dayStudentSchedule1 = schedule.getDailyScheduleForStudent(30, st1);	
+		dayStudentSchedule2 = schedule.getDailyScheduleForStudent(30, st2);		
+		monthStudentSchedule1 = schedule.getMonthlyScheduleForStudent(1, st1);	
+		monthStudentSchedule2 = schedule.getMonthlyScheduleForStudent(1, st2);	
 		
-		assertEquals(null, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getGroup(gr1).getStudent(st1));		
-		assertEquals(st2, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getGroup(gr1).getStudent(st2));
+		assertEquals(0, dayStudentSchedule1.getScheduleSlots().size());
+		assertEquals(0, monthStudentSchedule1.getScheduleSlots().size());
+		assertEquals(1, dayStudentSchedule2.getScheduleSlots().size());
+		assertEquals(1, monthStudentSchedule2.getScheduleSlots().size());
 		
-		assertEquals(null, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getCourse().getGroup(gr1).getStudent(st1));
-		assertEquals(st2, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getCourse().getGroup(gr1).getStudent(st2));
-		
-		assertEquals(null, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getGroup(gr1).getStudent(st1));
-		assertEquals(st2, ((CourseSchedule)university.getSchedule(courseSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getGroup(gr1).getStudent(st2));
+		assertEquals(1, university.getAllSchedule()
+				.getScheduleSlot(sheduleSlots.get(353)).getGroup().getStudents().size());
 	}
-
+	
 	@Test
 	public void testRemoveRoom() {
 		university.addRoom(room1);
 		university.addStudent(st1, gr1);				
-		sheduleSlots.get(353).addGroup(gr1);		
+		sheduleSlots.get(353).setGroup(gr1);		
 			
-		Schedule dayStudentSchedule = new DailyScheduleForStudent(3, 1, st1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getGroups().contains(st1.getGroup())){
-				dayStudentSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(dayStudentSchedule);		
-		
-				
-		RoomSchedule roomSchedule = new RoomSchedule(6, room1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getRoom().equals(room1)){
-				roomSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(roomSchedule);		
+		Schedule dayStudentSchedule = schedule.getDailyScheduleForStudent(30, st1);
+		assertEquals(1, dayStudentSchedule.getScheduleSlots().size());
 		
 		university.removeRoom(room1);
 		
 		assertEquals(0, university.getAllRooms().size());				
-		assertEquals(null, university.getSchedule(roomSchedule));
 				
-		assertEquals(null, ((DailyScheduleForStudent)university.getSchedule(dayStudentSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)).getRoom());		
-	}
-
-	@Test
-	public void testRemoveSchedule() {		
-		sheduleSlots.get(353).addGroup(gr1);
+		assertEquals(null, university.getAllSchedule()
+				.getScheduleSlot(sheduleSlots.get(353)).getRoom());
 		
-		RoomSchedule roomSchedule = new RoomSchedule(6, room1);
-		for (ScheduleSlot ss: sheduleSlots){
-			if(ss.getRoom().equals(room1)){
-				roomSchedule.addSchedulerSlot(ss);
-			}
-		}
-		university.addSchedule(roomSchedule);		
-		university.addSchedule(schedule);
-		university.removeSchedule(schedule);
-		
-		assertEquals(null, university.getSchedule(schedule));				
-		assertEquals(roomSchedule, university.getSchedule(roomSchedule));
-		assertEquals(sheduleSlots.get(353), ((RoomSchedule)university.getSchedule(roomSchedule))
-				.getScheduleSlot(sheduleSlots.get(353)));		
+		dayStudentSchedule = schedule.getDailyScheduleForStudent(30, st1);
+		assertEquals(null, dayStudentSchedule.getScheduleSlot(sheduleSlots.get(353)).getRoom());
 	}	
 	
 	@Test

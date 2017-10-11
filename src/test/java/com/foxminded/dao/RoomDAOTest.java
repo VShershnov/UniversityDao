@@ -1,10 +1,10 @@
-package test.java.dao;
+package test.java.com.foxminded.dao;
 
 import java.util.List;
-import main.java.dao.DaoFactory;
-import main.java.dao.PersistException;
-import main.java.dao.SqLiteRoomDao;
-import main.java.university.Room;
+import main.java.com.foxminded.dao.DaoFactory;
+import main.java.com.foxminded.dao.PersistException;
+import main.java.com.foxminded.dao.SqLiteRoomDao;
+import main.java.com.foxminded.university.Room;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -1,13 +1,13 @@
-package test.java.dao;
+package test.java.com.foxminded.dao;
 
 import java.util.List;
 
-import main.java.dao.DaoFactory;
-import main.java.dao.PersistException;
-import main.java.dao.SqLiteCourseDao;
-import main.java.university.Course;
-import main.java.university.Group;
-import main.java.university.person.Professor;
+import main.java.com.foxminded.dao.DaoFactory;
+import main.java.com.foxminded.dao.PersistException;
+import main.java.com.foxminded.dao.SqLiteCourseDao;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.person.Professor;
 
 import org.junit.After;
 import org.junit.Assert;
