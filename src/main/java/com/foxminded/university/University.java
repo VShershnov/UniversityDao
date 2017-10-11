@@ -1,18 +1,14 @@
-package main.java.university;
+package main.java.com.foxminded.university;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import main.java.schedule.CourseSchedule;
-import main.java.schedule.DailyScheduleForProfessor;
-import main.java.schedule.DailyScheduleForStudent;
-import main.java.schedule.MonthlyScheduleForProfessor;
-import main.java.schedule.MonthlyScheduleForStudent;
-import main.java.schedule.RoomSchedule;
-import main.java.schedule.Schedule;
-import main.java.university.person.Professor;
-import main.java.university.person.Student;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.schedule.Schedule;
+import main.java.com.foxminded.university.person.Professor;
+import main.java.com.foxminded.university.person.Student;
 
 public class University {
 	
@@ -28,7 +24,7 @@ public class University {
 	
 	private Set<Room> allRooms;
 	
-	private Set<Schedule> allSchedules;
+	private Schedule allSchedule;
 		
 	public University(){
 		this.allGroups = new HashSet<Group>();
@@ -36,7 +32,7 @@ public class University {
 		this.allStudents = new HashSet<Student>();
 		this.allCourses = new HashSet<Course>();
 		this.allRooms = new HashSet<Room>();
-		this.allSchedules = new HashSet<Schedule>();
+		this.allSchedule = new Schedule();
 	}
 	
 	public University(Integer id){
@@ -68,12 +64,7 @@ public class University {
 	public void addStudent(Student student) {
 		if (student!=null)
 			allStudents.add(student);
-	}
-	
-	public void addSchedule(Schedule schedule) {
-		if (schedule!=null)
-			allSchedules.add(schedule);
-	}
+	}	
 	
 	public void addStudent(Student student, Group group) {
 		
@@ -145,7 +136,7 @@ public class University {
 	//remove conditions
 	public void removeGroup(Group group) {
 		if(group!=null){
-			removeGroupFromSchedules(group);
+			allSchedule.removeGroupFromScheduleSlots(group);
 			group.removeGroupFromGroupCourses(group);
 			group.removeGroupFromGroupStudents();
 			allGroups.remove(group);
@@ -154,7 +145,7 @@ public class University {
 		 	
 	public void removeProfessor(Professor prof){
 		if(prof!=null){
-			removeProfessorFromSchedules(prof);
+			allSchedule.removeProfessorFromScheduleSlots(prof);
 			prof.removeProfessorFromProfessorCourses(prof);
 			allProfessors.remove(prof);		
 		}		
@@ -162,7 +153,7 @@ public class University {
 	
 	public void removeCourse(Course course) {
 		if(course!=null){
-			removeCourseFromSchedules(course);			
+			allSchedule.removeCourseFromScheduleSlots(course);			
 			course.removeCourseFromCourseGroups(course);
 			course.removeCourseFromCourseProfessors(course);
 			allCourses.remove(course);		
@@ -171,7 +162,6 @@ public class University {
 	
 	public void removeStudent(Student student) {
 		if(student!=null){
-			removeStudentFromSchedules(student);
 			student.removeStudentFromStudentGroup(student);			
 			allStudents.remove(student);		
 		}
@@ -179,22 +169,18 @@ public class University {
 	
 	public void removeRoom(Room room) {
 		if(room!=null){
-			removeRoomFromSchedules(room);			
+			allSchedule.removeRoomFromScheduleSlots(room);				
 			allRooms.remove(room);		
 		}		
 	}
 	
-	public void removeSchedule(Schedule schedule) {
-		if(schedule!=null)					
-			allSchedules.remove(schedule);				
-	}
-		
-	public Set<Schedule> getAllSchedules() {
-		return allSchedules;
+			
+	public Schedule getAllSchedule() {
+		return allSchedule;
 	}
 
-	public void setAllSchedules(Set<Schedule> allSchedules) {
-		this.allSchedules = allSchedules;
+	public void setAllSchedule(Schedule schedule) {
+		this.allSchedule = schedule;
 	}
 
 	public Set<Course> getAllCourses() {
@@ -245,7 +231,7 @@ public class University {
 				+ "allStudents="+ allStudents + "\n"
 				+ "allCourses=" + allCourses + "\n"
 				+ "allRooms="	+ allRooms + "\n"
-				+ "allSchedule=" + allSchedules;		
+				+ "allSchedule=" + allSchedule;		
 	}
 	
 	public Group getGroup(Group group) {
@@ -278,102 +264,5 @@ public class University {
 				return s;
 		}
 		return null;
-	}
-
-	public Schedule getSchedule(Schedule schedule) {
-		for (Schedule s: allSchedules){
-			if (s.equals(schedule))
-				return s;
-		}
-		return null;
-	}
-
-	private boolean isScheduleAreStudentSchedule(Schedule s, Student student) {
-		if ((s instanceof DailyScheduleForStudent) && ((DailyScheduleForStudent) s).getStudent().equals(student))
-			return true;
-		if ((s instanceof MonthlyScheduleForStudent) && ((MonthlyScheduleForStudent) s).getStudent().equals(student))
-			return true;
-		return false;
-	}
-
-	private boolean isScheduleAreStudentGroupSchedule(Schedule s, Group group) {
-		if ((s instanceof DailyScheduleForStudent) && ((DailyScheduleForStudent) s).getStudent().getGroup().equals(group))
-			return true;
-		if ((s instanceof MonthlyScheduleForStudent) && ((MonthlyScheduleForStudent) s).getStudent().getGroup().equals(group))
-			return true;
-		return false;
-	}
-
-	private boolean isScheduleAreProfessorSchedule(Schedule s, Professor prof) {
-		if ((s instanceof DailyScheduleForProfessor) && ((DailyScheduleForProfessor) s).getProfessor().equals(prof))
-			return true;
-		if ((s instanceof MonthlyScheduleForProfessor) && ((MonthlyScheduleForProfessor) s).getProfessor().equals(prof))
-			return true;
-		return false;		
-	}
-
-	private boolean isScheduleAreCourseSchedule(Schedule s, Course course) {
-		if ((s instanceof CourseSchedule) && ((CourseSchedule) s).getCourse().equals(course))
-			return true;
-		return false;		
-	}
-
-	private boolean isScheduleAreRoomSchedule(Schedule s, Room room) {
-		if ((s instanceof RoomSchedule) && ((RoomSchedule) s).getRoom().equals(room))
-			return true;
-		return false;		
-	}
-
-	private void removeStudentFromSchedules(Student student) {
-		for(Iterator<Schedule> i = allSchedules.iterator(); i.hasNext();){
-			Schedule s = i.next();
-			if(isScheduleAreStudentSchedule(s, student))
-				i.remove();								
-		}		
-	}
-
-	private void removeCourseFromSchedules(Course course) {
-		for(Iterator<Schedule> i = allSchedules.iterator(); i.hasNext();){
-			Schedule s = i.next();
-			if(isScheduleAreCourseSchedule(s, course))
-				i.remove();
-			else {
-				s.removeCoursefromScheduleSlots(course);
-			}						
-		}		
-	}
-
-	private void removeProfessorFromSchedules(Professor prof) {
-		for(Iterator<Schedule> i = allSchedules.iterator(); i.hasNext();){
-			Schedule s = i.next();
-			if(isScheduleAreProfessorSchedule(s, prof))
-				i.remove();
-			else {
-				s.removeProfessorfromScheduleSlots(prof);
-			}						
-		}		
-	}
-
-	private void removeGroupFromSchedules(Group group) {
-		
-		for(Iterator<Schedule> i = allSchedules.iterator(); i.hasNext();){
-			Schedule s = i.next();
-			if(isScheduleAreStudentGroupSchedule(s, group))
-				i.remove();
-			else {
-				s.removeGroupfromScheduleSlots(group);
-			}						
-		}	
-	}
-
-	private void removeRoomFromSchedules(Room room) {
-		for(Iterator<Schedule> i = allSchedules.iterator(); i.hasNext();){
-			Schedule s = i.next();
-			if(isScheduleAreRoomSchedule(s, room))
-				i.remove();
-			else {
-				s.removeRoomfromScheduleSlots(room);
-			}						
-		}		
 	}
 }

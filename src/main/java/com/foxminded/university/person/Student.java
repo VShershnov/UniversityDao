@@ -1,10 +1,11 @@
-package main.java.university.person;
+package main.java.com.foxminded.university.person;
 
-import main.java.university.Group;
+import main.java.com.foxminded.university.person.Student;
+import main.java.com.foxminded.university.Group;
 
 public class Student extends UniversityPerson {
 	
-	private Group group;
+private Group group;
 	
 	public Student() {
 	}

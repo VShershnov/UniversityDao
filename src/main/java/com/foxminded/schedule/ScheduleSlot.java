@@ -1,12 +1,9 @@
-package main.java.schedule;
+package main.java.com.foxminded.schedule;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import main.java.university.Course;
-import main.java.university.Room;
-import main.java.university.person.Professor;
-import main.java.university.Group;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.university.person.Professor;
+import main.java.com.foxminded.university.Group;
 
 public class ScheduleSlot {
 	
@@ -20,16 +17,13 @@ public class ScheduleSlot {
 	
 	private Professor professor;
 	
-	private Set<Group> groups;
+	private Group group;
 	
 	
 	public ScheduleSlot(Integer id, Room room, TimeUnit time) {
 		this.id = id;
 		this.room = room;
 		this.time = time;
-		this.groups = new HashSet<Group>();
-		this.professor = new Professor();
-		this.course = new Course();
 	}
 
 	public Integer getId() {
@@ -72,37 +66,18 @@ public class ScheduleSlot {
 		this.professor = professor;
 	}
 
-	public Set<Group> getGroups() {
-		return groups;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setGroups(Set<Group> groups) {
-		this.groups = groups;
-	}
-	
-	public void addGroup(Group group){
-		if (group!=null)
-			groups.add(group);
-	}
-	
-	public Group getGroup(Group group) {
-		for (Group g: groups){
-			if (g.equals(group))
-				return g;
-		}
-		return null;
-	}
-	
-	public void removeGroup(Group group){
-		if(group!=null)
-			groups.remove(group);
-	}
+	public void setGroup(Group group) {
+		this.group = group;
+	}	
 
 	@Override
 	public String toString() {
 		return "ScheduleSlot" + id + " [time=" + time + ", room" + room.getId() + ", course="
 				+ course.getName() + ", professor=" + professor.getFullName()
-				+ ", groups=" + groups.size() + "]\n";
-	}
-		
+				+ ", group=" + group.getName() + "]\n";
+	}		
 }

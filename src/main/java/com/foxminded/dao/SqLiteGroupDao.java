@@ -1,11 +1,11 @@
-package main.java.dao;
+package main.java.com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.university.Group;
+import main.java.com.foxminded.university.Group;
 
 public class SqLiteGroupDao extends AbstractJDBCDao<Group, Integer>{
 	
