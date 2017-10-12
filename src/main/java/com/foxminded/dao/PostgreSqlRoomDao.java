@@ -11,11 +11,11 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.university.Room;
 
-public class SqLiteRoomDao extends AbstractJDBCDao<Room, Integer>{
+public class PostgreSqlRoomDao extends AbstractJDBCDao<Room, Integer>{
 	
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
-	public SqLiteRoomDao(DaoFactory daoFactory) {
+	public PostgreSqlRoomDao(DaoFactory daoFactory) {
 		super(daoFactory);
 	}
 

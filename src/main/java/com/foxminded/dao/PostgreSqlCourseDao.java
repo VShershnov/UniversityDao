@@ -11,11 +11,11 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.university.Course;
 
-public class SqLiteCourseDao extends AbstractJDBCDao<Course, Integer>{
+public class PostgreSqlCourseDao extends AbstractJDBCDao<Course, Integer>{
 
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
-	public SqLiteCourseDao(DaoFactory daoFactory) {
+	public PostgreSqlCourseDao(DaoFactory daoFactory) {
 		super(daoFactory);		
 	}
 

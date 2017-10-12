@@ -1,16 +1,23 @@
 package main.java.com.foxminded.schedule;
 
-public class TimeUnit {
+import main.java.com.foxminded.dao.Identified;
+
+public class TimeUnit implements Identified<Integer>{
 	
+	private Integer id;
 	private Integer day;
 	private Integer time;
 	private Integer month;
 			
+	public TimeUnit() {
+	}
+
 	public TimeUnit(Integer day, Integer time, Integer month) {
 		this.day = day;
 		this.time = time;
 		this.month = month;
 	}
+	
 	public Integer getDay() {
 		return day;
 	}
@@ -33,5 +40,11 @@ public class TimeUnit {
 	@Override
 	public String toString() {
 		return "TimeUnit" + day + " [time=" + time + "]";
-	}		
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}	
 }

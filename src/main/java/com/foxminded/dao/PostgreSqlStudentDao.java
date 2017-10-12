@@ -8,10 +8,10 @@ import java.util.List;
 import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.person.Student;
 
-public class SqLiteStudentDao extends AbstractJDBCDao<Student, Integer>{
+public class PostgreSqlStudentDao extends AbstractJDBCDao<Student, Integer>{
 
 
-	public SqLiteStudentDao(DaoFactory daoFactory) {
+	public PostgreSqlStudentDao(DaoFactory daoFactory) {
 		super(daoFactory);		
 	}
 

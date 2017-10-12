@@ -19,6 +19,11 @@ public class Course implements Identified<Integer>{
 	private Set<Group> groups;
 	private Set<Professor> professors;
 			
+	public Course() {
+		this.groups = new HashSet<Group>();
+		this.professors = new HashSet<Professor>();
+	}
+
 	public Course(Integer id, String name, Integer duration) {
 		this.id = id;
 		this.name = name;
@@ -27,11 +32,6 @@ public class Course implements Identified<Integer>{
 		this.professors = new HashSet<Professor>();
 	}
 	
-	public Course() {
-		this.groups = new HashSet<Group>();
-		this.professors = new HashSet<Professor>();
-	}
-
 	public Integer getId() {
 		return id;
 	}

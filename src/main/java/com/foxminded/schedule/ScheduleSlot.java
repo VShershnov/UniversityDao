@@ -1,11 +1,12 @@
 package main.java.com.foxminded.schedule;
 
+import main.java.com.foxminded.dao.Identified;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Room;
 import main.java.com.foxminded.university.person.Professor;
 import main.java.com.foxminded.university.Group;
 
-public class ScheduleSlot {
+public class ScheduleSlot implements Identified<Integer> {
 	
 	private Integer id;
 	
@@ -20,6 +21,9 @@ public class ScheduleSlot {
 	private Group group;
 	
 	
+	public ScheduleSlot() {
+	}
+
 	public ScheduleSlot(Integer id, Room room, TimeUnit time) {
 		this.id = id;
 		this.room = room;

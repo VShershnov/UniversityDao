@@ -13,8 +13,8 @@ public class DaoFactory{
 	
 	private String url = "jdbc:postgresql://[::1]:5432/University?user=postgres&password=1111";
 	private String driver = "org.postgresql.Driver";//ָלÿ הנאיגונא
-   // private String url = "jdbc:sqlite:UniversityDAO.db";//URL אהנוס"
-    //private String driver = "org.sqlite.JDBC";//ָלÿ הנאיגונא
+   // private String url = "jdbc:PostgreSql:UniversityDAO.db";//URL אהנוס"
+    //private String driver = "org.PostgreSql.JDBC";//ָלÿ הנאיגונא
 	
 	public Connection getConnection() throws PersistException{
 		Connection connection = null;
@@ -28,22 +28,30 @@ public class DaoFactory{
         return  connection;		
 	}
 
-	public SqLiteGroupDao getGroupDao() throws PersistException{		
-		return new SqLiteGroupDao(this);
+	public PostgreSqlGroupDao getGroupDao() throws PersistException{		
+		return new PostgreSqlGroupDao(this);
 	}
 
-	public SqLiteStudentDao getStudentDao() throws PersistException{
-		return new SqLiteStudentDao(this);
+	public PostgreSqlStudentDao getStudentDao() throws PersistException{
+		return new PostgreSqlStudentDao(this);
 	}
 
-	public SqLiteRoomDao getRoomDao() throws PersistException{
-		return new SqLiteRoomDao(this);
+	public PostgreSqlRoomDao getRoomDao() throws PersistException{
+		return new PostgreSqlRoomDao(this);
 	}
 	
-	public SqLiteCourseDao getCourseDao() throws PersistException{
-		return new SqLiteCourseDao(this);
+	public PostgreSqlCourseDao getCourseDao() throws PersistException{
+		return new PostgreSqlCourseDao(this);
 	}
-
+	
+	public PostgreSqlScheduleSlotDao getScheduleSlotDao() throws PersistException{
+		return new PostgreSqlScheduleSlotDao(this);
+	}	
+	
+	public PostgreSqlTimeUnitDao getTimeUnitDao() throws PersistException{
+		return new PostgreSqlTimeUnitDao(this);
+	}
+	
 	public DaoFactory(){
 		try {
 			log.trace("register jdbc driver");

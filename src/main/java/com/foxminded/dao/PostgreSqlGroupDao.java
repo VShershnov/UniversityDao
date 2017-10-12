@@ -7,7 +7,7 @@ import java.util.List;
 
 import main.java.com.foxminded.university.Group;
 
-public class SqLiteGroupDao extends AbstractJDBCDao<Group, Integer>{
+public class PostgreSqlGroupDao extends AbstractJDBCDao<Group, Integer>{
 	
 	@Override
 	public String getSelectQuery() {
@@ -75,7 +75,7 @@ public class SqLiteGroupDao extends AbstractJDBCDao<Group, Integer>{
         return persist(g);
 	}
 
-	public SqLiteGroupDao(DaoFactory daoFactory) {
+	public PostgreSqlGroupDao(DaoFactory daoFactory) {
 		super(daoFactory);
 	}
 
