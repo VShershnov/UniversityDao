@@ -4,7 +4,7 @@ import java.util.List;
 
 import main.java.com.foxminded.dao.DaoFactory;
 import main.java.com.foxminded.dao.PersistException;
-import main.java.com.foxminded.dao.SqLiteCourseDao;
+import main.java.com.foxminded.dao.PostgreSqlCourseDao;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.person.Professor;
@@ -18,7 +18,7 @@ public class CourseDAOTest {
 
 	private DaoFactory daoFactory;
 	
-	private SqLiteCourseDao dao;
+	private PostgreSqlCourseDao dao;
 	
 	private Course course;
 	

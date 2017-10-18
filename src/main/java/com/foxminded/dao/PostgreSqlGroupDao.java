@@ -9,6 +9,10 @@ import main.java.com.foxminded.university.Group;
 
 public class PostgreSqlGroupDao extends AbstractJDBCDao<Group, Integer>{
 	
+	public PostgreSqlGroupDao(DaoFactory daoFactory) {
+		super(daoFactory);
+	}
+
 	@Override
 	public String getSelectQuery() {
 		return "SELECT id, name FROM \"Groups\"";
@@ -75,11 +79,6 @@ public class PostgreSqlGroupDao extends AbstractJDBCDao<Group, Integer>{
         return persist(g);
 	}
 
-	public PostgreSqlGroupDao(DaoFactory daoFactory) {
-		super(daoFactory);
-	}
-
-	
 	@Override
 	protected List<Group> parseResultSet(ResultSet rs) throws PersistException {
 		List<Group> result = new ArrayList<Group>();

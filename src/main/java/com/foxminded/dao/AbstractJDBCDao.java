@@ -18,6 +18,10 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Integer>{
 
+	public AbstractJDBCDao(DaoFactory daoFactory) {
+	    this.daoFactory = daoFactory;
+	}
+
 	private DaoFactory daoFactory;
 
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
@@ -162,26 +166,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	        log.debug("statement closed");
 	        statement.close();
 	        
-	        persistInstance = getByPK(id);
-	        /*
-	        // ѕолучаем только что вставленную запись
-	        sql = getSelectQuery() + " WHERE id = " + id + ";";
-        
-	        log.debug("Create prepared statement");
-	        statement = connection.prepareStatement(sql);
-	        log.debug("Get result set");
-	        ResultSet rs = statement.executeQuery();            
-            List<T> list = parseResultSet(rs);
-            if ((list == null) || (list.size() != 1)){
-            	String s = "Exception on findByPK new persist data.";
-            	log.error(s);
-                throw new PersistException(s);
-            }
-            
-           
-            persistInstance = list.iterator().next();
-        
-         */
+	        persistInstance = getByPK(id);	       
 	        
         log.debug("connection closed");
         } catch (Exception e) {
@@ -408,8 +393,4 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 		return "SELECT " + K1.getSimpleName() + "_id FROM " + K1.getSimpleName() + "s_" 
 						+ T.getSimpleName() + "s WHERE " + T.getSimpleName() + "_id = ?";
 	}
-
-	public AbstractJDBCDao(DaoFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
 }

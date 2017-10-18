@@ -1,9 +1,12 @@
 package test.java.com.foxminded.dao;
 
 import java.util.List;
+
 import main.java.com.foxminded.dao.DaoFactory;
 import main.java.com.foxminded.dao.PersistException;
 import main.java.com.foxminded.dao.PostgreSqlRoomDao;
+import main.java.com.foxminded.dao.PostgreSqlTimeUnitDao;
+import main.java.com.foxminded.schedule.TimeUnit;
 import main.java.com.foxminded.university.Room;
 
 import org.junit.After;
@@ -11,21 +14,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
-public class RoomDAOTest {
+public class TimeUnitDAOTest {
 	
 	private DaoFactory daoFactory;
 	
-	private PostgreSqlRoomDao dao;
+	private PostgreSqlTimeUnitDao dao;
 	
-	private Room room;
+	private TimeUnit timeUnit;
 	
 	@Before
 	public void setUpBefore() throws PersistException{
 		try {   
 			daoFactory = new DaoFactory();
-	        dao = daoFactory.getRoomDao();
+	        dao = daoFactory.getTimeUnitDao();
 	    } catch (Exception e) {
 	    	System.err.println("Could not setup logger configuration: " + e.toString());
             throw new PersistException(e);
@@ -41,27 +42,27 @@ public class RoomDAOTest {
 	@Test
 	public void testCreate() throws PersistException {
 		try {
-			room = dao.create(40, "Lviv");
+			timeUnit = dao.create(9, 18, 10);
 	    } catch (Exception e) {
             throw new PersistException(e);
         }
 	    
-		Assert.assertNotNull(room);
-	    Assert.assertNotNull(room.getId());
+		Assert.assertNotNull(timeUnit);
+	    Assert.assertNotNull(timeUnit.getId());
 	}
 
 	
 	@Test
 	public void testGetByPK() throws PersistException {
-		 int id = dao.create(43, "Lviv").getId();
-	     room = dao.getByPK(id);
-	        Assert.assertNotNull(room);
+		 int id = dao.create(10, 18, 10).getId();
+		 timeUnit = dao.getByPK(id);
+	        Assert.assertNotNull(timeUnit);
 	}
 
 	@Test
 	public void testGetAll() throws PersistException{
 		
-	    List<Room> list;
+	    List<TimeUnit> list;
 	    try {
 	    	list = dao.getAll();
 	    } catch (Exception e) {
@@ -74,15 +75,15 @@ public class RoomDAOTest {
 	@Test
 	public void testDelete() throws PersistException {
 		try {
-			room = dao.create(30, "Rivne");	    
+			timeUnit = dao.create(11, 18, 10);	    
 
-	        List<Room> list = dao.getAll();
+	        List<TimeUnit> list = dao.getAll();
 	        Assert.assertNotNull(list);
 
 	        int oldSize = list.size();
 	        Assert.assertTrue(oldSize > 0);
 
-	        dao.delete(room);
+	        dao.delete(timeUnit);
 
 	        list = dao.getAll();
 	        Assert.assertNotNull(list);
@@ -97,14 +98,14 @@ public class RoomDAOTest {
 
 	@Test
 	public void testUpdate() throws PersistException {
-		Room r = new Room(4, 15, "Chernivtsi");
+		TimeUnit tu = new TimeUnit(13, 12, 5, 10);
 		try {
-			dao.update(r);
+			dao.update(tu);
 	    } catch (Exception e) {
             throw new PersistException(e);
         }
 	    
-		Assert.assertTrue("not the same room", r.equals(dao.getByPK(r.getId())));
+		Assert.assertTrue("not the same timeUnit", tu.equals(dao.getByPK(tu.getId())));
 	}
 
 }

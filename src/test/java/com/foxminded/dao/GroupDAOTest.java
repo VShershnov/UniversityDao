@@ -6,7 +6,7 @@ import java.util.List;
 
 import main.java.com.foxminded.dao.DaoFactory;
 import main.java.com.foxminded.dao.PersistException;
-import main.java.com.foxminded.dao.SqLiteGroupDao;
+import main.java.com.foxminded.dao.PostgreSqlGroupDao;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.person.Professor;
@@ -21,7 +21,7 @@ public class GroupDAOTest {
 	
 	private DaoFactory daoFactory;
 	
-	private SqLiteGroupDao dao;
+	private PostgreSqlGroupDao dao;
 	
 	private Group group;
 	
@@ -65,7 +65,7 @@ public class GroupDAOTest {
 		DaoFactory daoFactory = new DaoFactory();
 	    List<Group> list;
 	    try {
-	        SqLiteGroupDao dao = daoFactory.getGroupDao();
+	        PostgreSqlGroupDao dao = daoFactory.getGroupDao();
 	        list = dao.getAll();
 	    } catch (Exception e) {
 	        throw new PersistException(e);

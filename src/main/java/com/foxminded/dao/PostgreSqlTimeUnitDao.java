@@ -2,12 +2,15 @@ package main.java.com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.schedule.TimeUnit;
+import main.java.com.foxminded.university.Course;
 
 public class PostgreSqlTimeUnitDao extends AbstractJDBCDao<TimeUnit, Integer> {
 	
@@ -19,52 +22,82 @@ public class PostgreSqlTimeUnitDao extends AbstractJDBCDao<TimeUnit, Integer> {
 
 	@Override
 	public String getSelectQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "SELECT id, time, day, month FROM \"TimeUnit\"";
 	}
 
 	@Override
 	public String getCreateQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "INSERT INTO \"TimeUnit\" (time, day, month) \n" +
+                "VALUES (?, ?, ?);";
 	}
 
 	@Override
 	public String getUpdateQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "UPDATE \"TimeUnit\" SET month = ?, day = ?, time = ? WHERE id= ?;";
 	}
 
 	@Override
 	public List<String> getDeleteQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> sql = new ArrayList<>();
+		sql.add("DELETE FROM \"TimeUnit\" WHERE id= ?;");
+		return sql;
 	}
 
-	public TimeUnit create() throws PersistException {
-		TimeUnit tu = new TimeUnit();
+	public TimeUnit create(Integer time, Integer day, Integer month) throws PersistException {
+		log.info("Creating new timeuinit " + time + day + month);
+		TimeUnit tu = new TimeUnit(time, day, month);
         return persist(tu);
 	}
 	
 	@Override
 	protected List<TimeUnit> parseResultSet(ResultSet rs) throws PersistException {
-		// TODO Auto-generated method stub
-		return null;
+		List<TimeUnit> result = new ArrayList<TimeUnit>();
+		log.debug("Parse Result Set from DB to Object's List");
+		try {
+            while (rs.next()) {
+            	if(log.isEnabled(Level.TRACE))
+            		log.trace("Parse row " + rs.getInt("id") + " to TimeUnit Object");
+            	TimeUnit timeUnit = new TimeUnit();
+            	timeUnit.setDay(rs.getInt("day"));
+            	timeUnit.setMonth(rs.getInt("month"));
+            	timeUnit.setTime(rs.getInt("time"));
+            	timeUnit.setId(rs.getInt("id"));            	
+                result.add(timeUnit);
+            }
+        } catch (Exception e) {
+        	log.error("Cannot parse Object ", e);
+            throw new PersistException(e);
+        }
+        return result;
 	}
 
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
 			TimeUnit object) throws PersistException {
-		// TODO Auto-generated method stub
-		
+		try {           
+			log.debug("Prepare Statement for insert to DB");
+			statement.setInt(1, object.getTime());
+			statement.setInt(2, object.getDay());
+			statement.setInt(3, object.getMonth());            
+        } catch (Exception e) {
+        	log.error("Cannot create Statement for insert ", e);
+        	throw new PersistException(e);
+        }		
 	}
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
 			TimeUnit object) throws PersistException {
-		// TODO Auto-generated method stub
-		
+		try {
+			log.debug("Prepare Statement for update to DB");
+			statement.setInt(1, object.getMonth());
+			statement.setInt(2, object.getDay());
+			statement.setInt(3, object.getTime());
+            statement.setInt(4, object.getId());
+        } catch (Exception e) {
+        	log.error("Cannot create Statement for update ", e);
+        	throw new PersistException(e);
+        }				
 	}
-
 }
