@@ -35,6 +35,10 @@ public class DaoFactory{
 	public PostgreSqlStudentDao getStudentDao() throws PersistException{
 		return new PostgreSqlStudentDao(this);
 	}
+	
+	public PostgreSqlProfessorDao getProfessorDao() throws PersistException{
+		return new PostgreSqlProfessorDao(this);
+	}
 
 	public PostgreSqlRoomDao getRoomDao() throws PersistException{
 		return new PostgreSqlRoomDao(this);

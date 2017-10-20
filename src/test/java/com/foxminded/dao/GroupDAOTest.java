@@ -1,7 +1,5 @@
 package test.java.com.foxminded.dao;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import main.java.com.foxminded.dao.DaoFactory;
@@ -9,7 +7,6 @@ import main.java.com.foxminded.dao.PersistException;
 import main.java.com.foxminded.dao.PostgreSqlGroupDao;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.person.Professor;
 import main.java.com.foxminded.university.person.Student;
 
 import org.junit.After;

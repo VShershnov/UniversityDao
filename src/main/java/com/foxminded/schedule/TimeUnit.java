@@ -94,7 +94,5 @@ public class TimeUnit implements Identified<Integer>{
 		} else if (!time.equals(other.time))
 			return false;
 		return true;
-	}
-	
-	
+	}	
 }

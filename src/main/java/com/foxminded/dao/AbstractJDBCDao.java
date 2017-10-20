@@ -22,7 +22,7 @@ public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Inte
 	    this.daoFactory = daoFactory;
 	}
 
-	private DaoFactory daoFactory;
+	DaoFactory daoFactory;
 
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	

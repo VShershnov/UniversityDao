@@ -35,11 +35,6 @@ public class Professor extends UniversityPerson{
 		return courses;
 	}
 
-	public String toString() {
-		return "Professor" + getId() + " [FullName="
-				+ getFullName() + ", Courses=" + courses.size() + "]";
-	}
-
 	public Course getCourse(Course course) {
 		for (Course c: courses){
 			if (c.equals(course))
@@ -53,4 +48,9 @@ public class Professor extends UniversityPerson{
 			c.getProfessors().remove(prof);
 		}		
 	}
+
+	public String toString() {
+		return "Professor" + getId() + " [FullName="
+				+ getFullName() + ", Courses=" + courses.size() + "]";
+	}	
 }

@@ -144,8 +144,7 @@ public class CourseDAOTest {
 	@Test
 	public void testDelete() throws PersistException {
 		try {
-			course = dao.create("JavaEE", 10);
-			
+			course = dao.create("JavaEE", 10);			
 
 	        List<Course> list = dao.getAll();
 	        Assert.assertNotNull(list);

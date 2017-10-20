@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.schedule.TimeUnit;
-import main.java.com.foxminded.university.Course;
 
 public class PostgreSqlTimeUnitDao extends AbstractJDBCDao<TimeUnit, Integer> {
 	

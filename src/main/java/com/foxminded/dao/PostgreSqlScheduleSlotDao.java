@@ -2,12 +2,19 @@ package main.java.com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.schedule.ScheduleSlot;
+import main.java.com.foxminded.schedule.TimeUnit;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.university.person.Professor;
 
 public class PostgreSqlScheduleSlotDao extends
 		AbstractJDBCDao<ScheduleSlot, Integer> {
@@ -20,52 +27,91 @@ public class PostgreSqlScheduleSlotDao extends
 
 	@Override
 	public String getSelectQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "SELECT id, room_id, course_id, professor_id, group_id, timeUnit_id FROM \"ScheduleSlots\"";
 	}
 
 	@Override
 	public String getCreateQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "INSERT INTO \"ScheduleSlots\" (room_id, course_id, professor_id, group_id, timeUnit_id) \n" +
+                "VALUES (?, ?, ?, ?, ?);";
 	}
 
 	@Override
 	public String getUpdateQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return "UPDATE \"ScheduleSlots\" SET room_id = ?, course_id = ?, professor_id = ?, group_id = ?, timeUnit_id = ? WHERE id= ?;";
 	}
 
 	@Override
 	public List<String> getDeleteQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> sql = new ArrayList<>();
+		sql.add("DELETE FROM \"ScheduleSlots\" WHERE id= ?;");
+		return sql;
 	}
 
-	public ScheduleSlot create() throws PersistException {
-		ScheduleSlot ss = new ScheduleSlot();
+	public ScheduleSlot create(TimeUnit time, Room room, Course course, Professor professor, Group group) throws 
+			PersistException {
+		log.info("Creating new ScheduleSlot " + time.toString() + " room = "+ room.getAddress() +
+				" course = " + course.getName());
+		ScheduleSlot ss = new ScheduleSlot(null, time, room, course, professor, group);
         return persist(ss);
 	}
 	
 	@Override
 	protected List<ScheduleSlot> parseResultSet(ResultSet rs)
 			throws PersistException {
-		// TODO Auto-generated method stub
-		return null;
+		List<ScheduleSlot> result = new ArrayList<>();
+		log.debug("Parse Result Set from DB to Object's List");
+		try {
+            while (rs.next()) {
+            	if(log.isEnabled(Level.TRACE))
+            		log.trace("Parse row " + rs.getInt("id") + " to ScheduleSlot Object");
+            	ScheduleSlot ss = new ScheduleSlot();
+            	ss.setId(rs.getInt("id"));
+            	ss.setRoom(daoFactory.getRoomDao().getByPK(rs.getInt("room_id")));
+            	ss.setCourse(daoFactory.getCourseDao().getByPK(rs.getInt("course_id")));
+            	ss.setProfessor(daoFactory.getProfessorDao().getByPK(rs.getInt("professor_id")));
+            	ss.setGroup(daoFactory.getGroupDao().getByPK(rs.getInt("group_id")));
+            	ss.setTime(daoFactory.getTimeUnitDao().getByPK(rs.getInt("timeUnit_id")));            	
+                result.add(ss);
+            }
+        } catch (Exception e) {
+        	log.error("Cannot parse Object ", e);
+            throw new PersistException(e);
+        }
+        return result;
 	}
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
 			ScheduleSlot object) throws PersistException {
-		// TODO Auto-generated method stub
-
+		try {           
+			log.debug("Prepare Statement for insert to DB");
+			statement.setInt(1, object.getRoom().getId());
+			statement.setInt(2, object.getCourse().getId());
+			statement.setInt(3, object.getProfessor().getId());
+			statement.setInt(4, object.getGroup().getId());
+			statement.setInt(5, object.getTime().getId());
+        } catch (Exception e) {
+        	log.error("Cannot create Statement for insert ", e);
+        	throw new PersistException(e);
+        }
 	}
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
 			ScheduleSlot object) throws PersistException {
-		// TODO Auto-generated method stub
-
+		try {
+			log.debug("Prepare Statement for update to DB");
+			statement.setInt(1, object.getRoom().getId());
+			statement.setInt(2, object.getCourse().getId());
+			statement.setInt(3, object.getProfessor().getId());
+			statement.setInt(4, object.getGroup().getId());
+			statement.setInt(5, object.getTime().getId());
+            statement.setInt(6, object.getId());
+        } catch (Exception e) {
+        	log.error("Cannot create Statement for update ", e);
+        	throw new PersistException(e);
+        }
 	}
 
 }

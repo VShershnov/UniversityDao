@@ -30,9 +30,9 @@ public class UniversityTest {
 	private Student st2;
 	private Student st3;
 	
-	private static Room room1;
+	private Room room1;
 	
-	private static Professor prMath;
+	private Professor prMath;
 	private Professor prInfo;
 	
 	private Course math;
@@ -66,7 +66,9 @@ public class UniversityTest {
 		int i=0;
 		for (int d=1; d<31; d++){
 			for (int t=9; t<21; t++){
-				sheduleSlots.add(new ScheduleSlot(i++, room1, new TimeUnit(d,t,1)));
+				TimeUnit time = new TimeUnit(t,d,1);
+				ScheduleSlot s1 = new ScheduleSlot(i++, time, room1);
+				sheduleSlots.add(s1);
 			}
 		}
 		schedule = new Schedule(sheduleSlots);
