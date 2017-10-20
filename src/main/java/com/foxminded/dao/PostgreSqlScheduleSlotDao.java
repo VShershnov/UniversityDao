@@ -27,18 +27,18 @@ public class PostgreSqlScheduleSlotDao extends
 
 	@Override
 	public String getSelectQuery() {
-		return "SELECT id, room_id, course_id, professor_id, group_id, timeUnit_id FROM \"ScheduleSlots\"";
+		return "SELECT id, room_id, course_id, professor_id, group_id, timeunit_id FROM \"ScheduleSlots\"";
 	}
 
 	@Override
 	public String getCreateQuery() {
-		return "INSERT INTO \"ScheduleSlots\" (room_id, course_id, professor_id, group_id, timeUnit_id) \n" +
+		return "INSERT INTO \"ScheduleSlots\" (room_id, course_id, professor_id, group_id, timeunit_id) \n" +
                 "VALUES (?, ?, ?, ?, ?);";
 	}
 
 	@Override
 	public String getUpdateQuery() {
-		return "UPDATE \"ScheduleSlots\" SET room_id = ?, course_id = ?, professor_id = ?, group_id = ?, timeUnit_id = ? WHERE id= ?;";
+		return "UPDATE \"ScheduleSlots\" SET room_id = ?, course_id = ?, professor_id = ?, group_id = ?, timeunit_id = ? WHERE id= ?;";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class PostgreSqlScheduleSlotDao extends
             	ss.setCourse(daoFactory.getCourseDao().getByPK(rs.getInt("course_id")));
             	ss.setProfessor(daoFactory.getProfessorDao().getByPK(rs.getInt("professor_id")));
             	ss.setGroup(daoFactory.getGroupDao().getByPK(rs.getInt("group_id")));
-            	ss.setTime(daoFactory.getTimeUnitDao().getByPK(rs.getInt("timeUnit_id")));            	
+            	ss.setTime(daoFactory.getTimeUnitDao().getByPK(rs.getInt("timeunit_id")));            	
                 result.add(ss);
             }
         } catch (Exception e) {
@@ -113,5 +113,4 @@ public class PostgreSqlScheduleSlotDao extends
         	throw new PersistException(e);
         }
 	}
-
 }

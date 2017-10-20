@@ -260,7 +260,6 @@ public class UniversityTest {
 		assertEquals(gr1, university.getGroup(gr1).getStudent(st1).getGroup());
 		assertEquals(gr1, university.getStudent(st1).getGroup());		
 	}
-
 	
 
 	@Test

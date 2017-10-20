@@ -7,9 +7,14 @@ import main.java.com.foxminded.dao.PersistException;
 import main.java.com.foxminded.dao.PostgreSqlRoomDao;
 import main.java.com.foxminded.dao.PostgreSqlScheduleSlotDao;
 import main.java.com.foxminded.dao.PostgreSqlTimeUnitDao;
+import main.java.com.foxminded.schedule.Schedule;
 import main.java.com.foxminded.schedule.ScheduleSlot;
 import main.java.com.foxminded.schedule.TimeUnit;
+import main.java.com.foxminded.university.Course;
+import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.university.person.Professor;
+import main.java.com.foxminded.university.person.Student;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -23,6 +28,16 @@ public class SheduleSlotDAOTest {
 	private PostgreSqlScheduleSlotDao dao;
 	
 	private ScheduleSlot scheduleSlot;
+	
+	private Group group;	
+	
+	private Room room;
+	
+	private Professor prof;	
+	
+	private Course course;
+	
+	private TimeUnit time;
 	
 	@Before
 	public void setUpBefore() throws PersistException{
@@ -38,18 +53,23 @@ public class SheduleSlotDAOTest {
 	@After
 	public void tearDown(){
 		daoFactory = null;
-		dao = null;		
+		dao = null;	
+		group = null;
+		room = null;
+		course = null;
+		prof = null;
+		time = null;
 	}
 
 	@Test
 	public void testCreate() throws PersistException {
 		try {
-			daoFactory.getTimeUnitDao().getByPK(3);
-			daoFactory.getRoomDao().getByPK(3);
-			daoFactory.getCourseDao().getByPK(3);
-			daoFactory.getProfessorDao().getByPK(3);
-			daoFactory.getGroupDao().getByPK(3);
-			scheduleSlot = dao.create(9, 18, 10);
+			time = daoFactory.getTimeUnitDao().getByPK(4);
+			room = daoFactory.getRoomDao().getByPK(3);
+			course = daoFactory.getCourseDao().getByPK(3);
+			prof = new Professor(3, "Stepanova");
+			group = daoFactory.getGroupDao().getByPK(3);
+			scheduleSlot = dao.create(time, room, course, prof, group);
 			
 			Assert.assertNotNull(scheduleSlot);
 		    Assert.assertNotNull(scheduleSlot.getId());
@@ -58,7 +78,7 @@ public class SheduleSlotDAOTest {
         }		
 	}
 
-	
+	/*
 	@Test
 	public void testGetByPK() throws PersistException {
 		 int id = dao.create(10, 18, 10).getId();
@@ -114,5 +134,5 @@ public class SheduleSlotDAOTest {
             throw new PersistException(e);
         }
 	}
-
+*/
 }

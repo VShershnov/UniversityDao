@@ -98,7 +98,7 @@ public class TimeUnitDAOTest {
 
 	@Test
 	public void testUpdate() throws PersistException {
-		TimeUnit tu = new TimeUnit(13, 12, 5, 10);
+		TimeUnit tu = new TimeUnit(4, 12, 5, 10);
 		try {
 			dao.update(tu);
 			

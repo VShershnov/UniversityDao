@@ -74,8 +74,10 @@ public class University {
 				System.out.println("To University #" + id + " added NEW " + group + "\n");
 			}		
 			
+			//remove student from previous group 
 			if(student.getGroup()!=null)
 				getGroup(getStudent(student).getGroup()).removeStudent(student);
+			
 			
 			student.setGroup(group);
 			

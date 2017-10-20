@@ -16,7 +16,7 @@ public class Professor extends UniversityPerson{
 		this.courses = new HashSet<Course>();
 	}
 	
-	public Professor(int id, String name) {
+	public Professor(Integer id, String name) {
 		super.setId(id);
 		super.setFullName(name);
 		this.courses = new HashSet<Course>();

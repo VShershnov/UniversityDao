@@ -19,7 +19,7 @@ public class TimeUnit implements Identified<Integer>{
 	}
 	
 	public TimeUnit(Integer id, Integer time, Integer day, Integer month) {
-		this(day, time, month);
+		this(time, day, month);
 		this.id= id;
 	}
 	
@@ -53,6 +53,7 @@ public class TimeUnit implements Identified<Integer>{
 		this.id = id;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
