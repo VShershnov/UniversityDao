@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.person.Professor;
 
 public class PostgreSqlProfessorDao extends AbstractJDBCDao<Professor, Integer> {
@@ -16,7 +15,7 @@ public class PostgreSqlProfessorDao extends AbstractJDBCDao<Professor, Integer> 
 
 	@Override
 	public String getSelectQuery() {
-		return "SELECT id, name FROM \"Professors\"";
+		return "SELECT id, fullname FROM \"Professors\"";
 	}
 
 	/**
@@ -57,19 +56,20 @@ public class PostgreSqlProfessorDao extends AbstractJDBCDao<Professor, Integer> 
 	
 	@Override
 	public String getCreateQuery() {
-		return "INSERT INTO \"Professors\" (fuulname) \n" +
+		return "INSERT INTO \"Professors\" (fullname) \n" +
                 "VALUES (?);";
 	}
 
 	@Override
 	public String getUpdateQuery() {
-		return "UPDATE \"Professors\" SET fuulname = ? WHERE id= ?;";
+		return "UPDATE \"Professors\" SET fullname = ? WHERE id= ?;";
 	}
 
 	@Override
 	public List<String> getDeleteQuery() {
 		List<String> sql = new ArrayList<>();		
 		sql.add("DELETE FROM Professors_Courses WHERE professor_id = ?;");
+		sql.add("UPDATE \"ScheduleSlots\" SET professor_id = null WHERE professor_id = ?;");
 		sql.add("DELETE FROM \"Professors\" WHERE id= ?;");
 		return sql;
 	}
@@ -87,7 +87,7 @@ public class PostgreSqlProfessorDao extends AbstractJDBCDao<Professor, Integer> 
             while (rs.next()) {
             	Professor prof = new Professor();
             	prof.setId(rs.getInt("id"));
-            	prof.setFullName(rs.getString("name"));               
+            	prof.setFullName(rs.getString("fullname"));               
                 result.add(prof);
             }
         } catch (Exception e) {

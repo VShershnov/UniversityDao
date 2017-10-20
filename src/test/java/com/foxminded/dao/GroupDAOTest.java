@@ -59,10 +59,9 @@ public class GroupDAOTest {
 	
 	@Test
 	public void testGetAll() throws PersistException {
-		DaoFactory daoFactory = new DaoFactory();
+		
 	    List<Group> list;
-	    try {
-	        PostgreSqlGroupDao dao = daoFactory.getGroupDao();
+	    try {	        
 	        list = dao.getAll();
 	    } catch (Exception e) {
 	        throw new PersistException(e);

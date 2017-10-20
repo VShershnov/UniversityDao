@@ -70,8 +70,7 @@ public class SheduleSlotDAOTest {
 			prof = new Professor(3, "Stepanova");
 			group = daoFactory.getGroupDao().getByPK(3);
 			scheduleSlot = dao.create(time, room, course, prof, group);
-			
-			Assert.assertNotNull(scheduleSlot);
+						
 		    Assert.assertNotNull(scheduleSlot.getId());
 	    } catch (Exception e) {
             throw new PersistException(e);
