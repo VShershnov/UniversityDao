@@ -67,7 +67,7 @@ public class SheduleSlotDAOTest {
 			time = daoFactory.getTimeUnitDao().getByPK(4);
 			room = daoFactory.getRoomDao().getByPK(3);
 			course = daoFactory.getCourseDao().getByPK(3);
-			prof = new Professor(3, "Stepanova");
+			prof = daoFactory.getProfessorDao().getByPK(3);
 			group = daoFactory.getGroupDao().getByPK(3);
 			scheduleSlot = dao.create(time, room, course, prof, group);
 						
@@ -85,7 +85,7 @@ public class SheduleSlotDAOTest {
 		time = daoFactory.getTimeUnitDao().getByPK(4);
 		room = daoFactory.getRoomDao().getByPK(4);
 		course = daoFactory.getCourseDao().getByPK(3);
-		prof = new Professor(3, "Stepanova");
+		prof = daoFactory.getProfessorDao().getByPK(3);
 		group = daoFactory.getGroupDao().getByPK(3);
 		
 		 int id = dao.create(time, room, course, prof, group).getId();
@@ -107,14 +107,21 @@ public class SheduleSlotDAOTest {
 	    Assert.assertNotNull(list);
 	    Assert.assertTrue(list.size() > 0);	
 	}
-/*
+
 	@Test
-	public void testUpdate() throws PersistException {
-		ScheduleSlot ss = new ScheduleSlot(13, 12, 5, 10);
+	public void testUpdate() throws PersistException {		
 		try {
-			dao.update(ss);
+			time = daoFactory.getTimeUnitDao().getByPK(7);
+			room = daoFactory.getRoomDao().getByPK(4);
+			course = daoFactory.getCourseDao().getByPK(3);
+			prof = daoFactory.getProfessorDao().getByPK(3);
+			group = daoFactory.getGroupDao().getByPK(3);			
+			scheduleSlot = new ScheduleSlot(57, time, room, course, prof, group);
 			
-			Assert.assertTrue("not the same timeUnit", ss.equals(dao.getByPK(ss.getId())));
+			
+			dao.update(scheduleSlot);
+			
+			Assert.assertTrue("not the same timeUnit", scheduleSlot.equals(dao.getByPK(scheduleSlot.getId())));
 	    } catch (Exception e) {
 	        throw new PersistException(e);
 	    }		
@@ -123,7 +130,12 @@ public class SheduleSlotDAOTest {
 	@Test
 	public void testDelete() throws PersistException {
 		try {
-			scheduleSlot = dao.create(11, 18, 10);	    
+			time = daoFactory.getTimeUnitDao().getByPK(1);
+			room = daoFactory.getRoomDao().getByPK(5);
+			course = daoFactory.getCourseDao().getByPK(3);
+			prof = daoFactory.getProfessorDao().getByPK(3);
+			group = daoFactory.getGroupDao().getByPK(3);
+			scheduleSlot = dao.create(time, room, course, prof, group);	    
 
 	        List<ScheduleSlot> list = dao.getAll();
 	        Assert.assertNotNull(list);
@@ -143,5 +155,4 @@ public class SheduleSlotDAOTest {
             throw new PersistException(e);
         }
 	}
-*/
 }
