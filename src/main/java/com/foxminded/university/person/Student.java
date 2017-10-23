@@ -5,7 +5,7 @@ import main.java.com.foxminded.university.Group;
 
 public class Student extends UniversityPerson {
 	
-private Group group;
+	private Group group;
 	
 	public Student() {
 	}
@@ -13,6 +13,20 @@ private Group group;
 	public Student(int id, String name) {
 		super.setId(id);
 		super.setFullName(name);
+	}
+	
+	public Student(String name) {
+		super.setFullName(name);
+	}
+	
+	public Student(String name, Group group) {
+		this(name);
+		this.group = group;
+	}
+	
+	public Student(Integer id, String name, Group group) {
+		this(id, name);
+		this.group = group;
 	}
 
 	public Group getGroup() {
