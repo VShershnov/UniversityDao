@@ -1,14 +1,14 @@
-package main.java.com.foxminded.university;
+package com.foxminded.university;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.Room;
-import main.java.com.foxminded.schedule.Schedule;
-import main.java.com.foxminded.university.person.Professor;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.university.Course;
+import com.foxminded.university.Group;
+import com.foxminded.university.Room;
+import com.foxminded.schedule.Schedule;
+import com.foxminded.university.person.Professor;
+import com.foxminded.university.person.Student;
 
 public class University {
 	

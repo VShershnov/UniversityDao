@@ -1,12 +1,12 @@
-package main.java.com.foxminded.university;
+package com.foxminded.university;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.dao.Identified;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.university.Course;
+import com.foxminded.university.Group;
+import com.foxminded.dao.Identified;
+import com.foxminded.university.person.Student;
 
 
 public class Group implements Identified<Integer>{

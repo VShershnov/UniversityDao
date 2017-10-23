@@ -1,6 +1,6 @@
-package main.java.com.foxminded.university;
+package com.foxminded.university;
 
-import main.java.com.foxminded.dao.Identified;
+import com.foxminded.dao.Identified;
 
 public class Room implements Identified<Integer>{
 	

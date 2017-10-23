@@ -1,10 +1,10 @@
-package main.java.com.foxminded.university.person;
+package com.foxminded.university.person;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import main.java.com.foxminded.university.person.Professor;
-import main.java.com.foxminded.university.Course;
+import com.foxminded.university.person.Professor;
+import com.foxminded.university.Course;
 
 public class Professor extends UniversityPerson{
 

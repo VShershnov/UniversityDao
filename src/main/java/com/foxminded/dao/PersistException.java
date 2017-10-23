@@ -1,4 +1,4 @@
-package main.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 public class PersistException extends Exception {
 

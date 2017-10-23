@@ -1,19 +1,19 @@
-package test.java.com.foxminded.university;
+package com.foxminded.university;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.foxminded.schedule.Schedule;
-import main.java.com.foxminded.schedule.ScheduleSlot;
-import main.java.com.foxminded.schedule.TimeUnit;
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.Room;
-import main.java.com.foxminded.university.University;
-import main.java.com.foxminded.university.person.Professor;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.schedule.Schedule;
+import com.foxminded.schedule.ScheduleSlot;
+import com.foxminded.schedule.TimeUnit;
+import com.foxminded.university.Course;
+import com.foxminded.university.Group;
+import com.foxminded.university.Room;
+import com.foxminded.university.University;
+import com.foxminded.university.person.Professor;
+import com.foxminded.university.person.Student;
 
 import org.junit.After;
 import org.junit.Before;

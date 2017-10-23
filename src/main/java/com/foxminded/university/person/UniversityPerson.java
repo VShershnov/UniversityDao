@@ -1,6 +1,6 @@
-package main.java.com.foxminded.university.person;
+package com.foxminded.university.person;
 
-import main.java.com.foxminded.dao.Identified;
+import com.foxminded.dao.Identified;
 
 public class UniversityPerson implements Identified<Integer>{
 	

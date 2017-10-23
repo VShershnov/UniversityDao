@@ -1,6 +1,6 @@
-package main.java.com.foxminded.schedule;
+package com.foxminded.schedule;
 
-import main.java.com.foxminded.dao.Identified;
+import com.foxminded.dao.Identified;
 
 public class TimeUnit implements Identified<Integer>{
 	

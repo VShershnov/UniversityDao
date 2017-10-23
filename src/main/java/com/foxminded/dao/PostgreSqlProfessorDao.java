@@ -1,11 +1,11 @@
-package main.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.foxminded.university.person.Professor;
+import com.foxminded.university.person.Professor;
 
 public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Integer> {
 

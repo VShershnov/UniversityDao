@@ -1,15 +1,15 @@
-package main.java.com.foxminded.schedule;
+package com.foxminded.schedule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.foxminded.schedule.Schedule;
-import main.java.com.foxminded.schedule.ScheduleSlot;
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.Room;
-import main.java.com.foxminded.university.person.Professor;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.schedule.Schedule;
+import com.foxminded.schedule.ScheduleSlot;
+import com.foxminded.university.Course;
+import com.foxminded.university.Group;
+import com.foxminded.university.Room;
+import com.foxminded.university.person.Professor;
+import com.foxminded.university.person.Student;
 
 public class Schedule {
 

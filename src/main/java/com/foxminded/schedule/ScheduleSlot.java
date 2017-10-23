@@ -1,10 +1,10 @@
-package main.java.com.foxminded.schedule;
+package com.foxminded.schedule;
 
-import main.java.com.foxminded.dao.Identified;
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Room;
-import main.java.com.foxminded.university.person.Professor;
-import main.java.com.foxminded.university.Group;
+import com.foxminded.dao.Identified;
+import com.foxminded.university.Course;
+import com.foxminded.university.Room;
+import com.foxminded.university.person.Professor;
+import com.foxminded.university.Group;
 
 public class ScheduleSlot implements Identified<Integer> {
 	

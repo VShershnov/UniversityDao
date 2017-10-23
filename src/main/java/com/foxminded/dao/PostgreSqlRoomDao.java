@@ -1,4 +1,4 @@
-package main.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import main.java.com.foxminded.university.Room;
+import com.foxminded.university.Room;
 
 public class PostgreSqlRoomDao extends AbstractPostgreSqlDao<Room, Integer>{
 	

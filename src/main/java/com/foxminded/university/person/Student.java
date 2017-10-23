@@ -1,7 +1,7 @@
-package main.java.com.foxminded.university.person;
+package com.foxminded.university.person;
 
-import main.java.com.foxminded.university.person.Student;
-import main.java.com.foxminded.university.Group;
+import com.foxminded.university.person.Student;
+import com.foxminded.university.Group;
 
 public class Student extends UniversityPerson {
 	

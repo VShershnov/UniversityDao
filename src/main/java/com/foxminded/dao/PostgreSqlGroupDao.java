@@ -1,12 +1,12 @@
-package main.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.university.Group;
+import com.foxminded.university.person.Student;
 
 public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	

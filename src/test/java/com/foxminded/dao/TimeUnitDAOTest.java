@@ -1,17 +1,17 @@
-package test.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 import java.util.List;
 
-import main.java.com.foxminded.dao.DaoFactory;
-import main.java.com.foxminded.dao.PersistException;
-import main.java.com.foxminded.dao.PostgreSqlScheduleSlotDao;
-import main.java.com.foxminded.dao.PostgreSqlTimeUnitDao;
-import main.java.com.foxminded.schedule.ScheduleSlot;
-import main.java.com.foxminded.schedule.TimeUnit;
-import main.java.com.foxminded.university.Course;
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.Room;
-import main.java.com.foxminded.university.person.Professor;
+import com.foxminded.dao.DaoFactory;
+import com.foxminded.dao.PersistException;
+import com.foxminded.dao.PostgreSqlScheduleSlotDao;
+import com.foxminded.dao.PostgreSqlTimeUnitDao;
+import com.foxminded.schedule.ScheduleSlot;
+import com.foxminded.schedule.TimeUnit;
+import com.foxminded.university.Course;
+import com.foxminded.university.Group;
+import com.foxminded.university.Room;
+import com.foxminded.university.person.Professor;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package main.java.com.foxminded.dao;
+package com.foxminded.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import main.java.com.foxminded.university.Group;
-import main.java.com.foxminded.university.person.Student;
+import com.foxminded.university.Group;
+import com.foxminded.university.person.Student;
 
 public class PostgreSqlStudentDao extends AbstractPostgreSqlDao<Student, Integer>{
 
