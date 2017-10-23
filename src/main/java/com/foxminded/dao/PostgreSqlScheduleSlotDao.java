@@ -17,7 +17,7 @@ import main.java.com.foxminded.university.Room;
 import main.java.com.foxminded.university.person.Professor;
 
 public class PostgreSqlScheduleSlotDao extends
-		AbstractJDBCDao<ScheduleSlot, Integer> {
+		AbstractPostgreSqlDao<ScheduleSlot, Integer> {
 	
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 

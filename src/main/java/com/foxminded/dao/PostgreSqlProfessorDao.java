@@ -7,7 +7,7 @@ import java.util.List;
 
 import main.java.com.foxminded.university.person.Professor;
 
-public class PostgreSqlProfessorDao extends AbstractJDBCDao<Professor, Integer> {
+public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Integer> {
 
 	public PostgreSqlProfessorDao(DaoFactory daoFactory) {
 		super(daoFactory);

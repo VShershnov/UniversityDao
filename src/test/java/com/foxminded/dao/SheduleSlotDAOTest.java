@@ -72,6 +72,8 @@ public class SheduleSlotDAOTest {
 			scheduleSlot = dao.create(time, room, course, prof, group);
 						
 		    Assert.assertNotNull(scheduleSlot.getId());
+		    
+		    
 	    } catch (Exception e) {
             throw new PersistException(e);
         }		

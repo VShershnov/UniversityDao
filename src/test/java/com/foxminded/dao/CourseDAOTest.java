@@ -5,8 +5,12 @@ import java.util.List;
 import main.java.com.foxminded.dao.DaoFactory;
 import main.java.com.foxminded.dao.PersistException;
 import main.java.com.foxminded.dao.PostgreSqlCourseDao;
+import main.java.com.foxminded.dao.PostgreSqlScheduleSlotDao;
+import main.java.com.foxminded.schedule.ScheduleSlot;
+import main.java.com.foxminded.schedule.TimeUnit;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.Room;
 import main.java.com.foxminded.university.person.Professor;
 
 import org.junit.After;
@@ -47,7 +51,6 @@ public class CourseDAOTest {
             throw new PersistException(e);
         }
 	    
-		Assert.assertNotNull(course);
 	    Assert.assertNotNull(course.getId());
 	}
 
@@ -144,7 +147,16 @@ public class CourseDAOTest {
 	@Test
 	public void testDelete() throws PersistException {
 		try {
-			course = dao.create("JavaEE", 10);			
+			TimeUnit time = daoFactory.getTimeUnitDao().getByPK(2);
+			Room room = daoFactory.getRoomDao().getByPK(1);			
+			Group group = daoFactory.getGroupDao().getByPK(3);			
+			Professor prof = daoFactory.getProfessorDao().getByPK(3);
+			
+			course = dao.create("JavaEE", 10);	
+			
+			PostgreSqlScheduleSlotDao daoSS = daoFactory.getScheduleSlotDao();
+			ScheduleSlot scheduleSlot = daoSS.create(time, room, course, prof, group);
+			Assert.assertNotNull(scheduleSlot.getId());					
 
 	        List<Course> list = dao.getAll();
 	        Assert.assertNotNull(list);
@@ -159,6 +171,11 @@ public class CourseDAOTest {
 
 	        int newSize = list.size();
 	        Assert.assertEquals(1, oldSize - newSize);
+	        
+	        ScheduleSlot newSS = daoSS.getByPK(scheduleSlot.getId());
+	        Assert.assertEquals(null, newSS.getCourse());
+	        
+	        daoSS.delete(scheduleSlot);
 	        
 		} catch (Exception e) {
             throw new PersistException(e);

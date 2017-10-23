@@ -16,9 +16,9 @@ import org.apache.logging.log4j.Logger;
  * @param <T>  тип объекта персистенции
  * @param <PK> тип первичного ключа
  */
-public abstract class AbstractJDBCDao<T extends Identified <PK>, PK extends Integer>{
+public abstract class AbstractPostgreSqlDao<T extends Identified <PK>, PK extends Integer>{
 
-	public AbstractJDBCDao(DaoFactory daoFactory) {
+	public AbstractPostgreSqlDao(DaoFactory daoFactory) {
 	    this.daoFactory = daoFactory;
 	}
 

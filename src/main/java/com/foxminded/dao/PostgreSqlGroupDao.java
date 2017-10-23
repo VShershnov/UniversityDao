@@ -7,7 +7,7 @@ import java.util.List;
 
 import main.java.com.foxminded.university.Group;
 
-public class PostgreSqlGroupDao extends AbstractJDBCDao<Group, Integer>{
+public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	
 	public PostgreSqlGroupDao(DaoFactory daoFactory) {
 		super(daoFactory);
@@ -69,7 +69,8 @@ public class PostgreSqlGroupDao extends AbstractJDBCDao<Group, Integer>{
 	public List<String> getDeleteQuery() {
 		List<String> sql = new ArrayList<>();		
 		sql.add("DELETE FROM Groups_Students WHERE group_id = ?;");
-		sql.add("DELETE FROM Groups_Courses WHERE group_id = ?;");		
+		sql.add("DELETE FROM Groups_Courses WHERE group_id = ?;");
+		sql.add("UPDATE \"ScheduleSlots\" SET group_id = null WHERE group_id = ?;");
 		sql.add("DELETE FROM \"Groups\" WHERE id= ?;");
 		return sql;
 	}

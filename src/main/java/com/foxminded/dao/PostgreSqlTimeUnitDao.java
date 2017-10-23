@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.schedule.TimeUnit;
 
-public class PostgreSqlTimeUnitDao extends AbstractJDBCDao<TimeUnit, Integer> {
+public class PostgreSqlTimeUnitDao extends AbstractPostgreSqlDao<TimeUnit, Integer> {
 	
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 
@@ -38,7 +38,9 @@ public class PostgreSqlTimeUnitDao extends AbstractJDBCDao<TimeUnit, Integer> {
 	@Override
 	public List<String> getDeleteQuery() {
 		List<String> sql = new ArrayList<>();
+		sql.add("UPDATE \"ScheduleSlots\" SET timeunit_id = null WHERE timeunit_id = ?;");
 		sql.add("DELETE FROM \"TimeUnit\" WHERE id= ?;");
+		
 		return sql;
 	}
 

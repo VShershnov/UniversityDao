@@ -8,7 +8,7 @@ import java.util.List;
 import main.java.com.foxminded.university.Group;
 import main.java.com.foxminded.university.person.Student;
 
-public class PostgreSqlStudentDao extends AbstractJDBCDao<Student, Integer>{
+public class PostgreSqlStudentDao extends AbstractPostgreSqlDao<Student, Integer>{
 
 
 	public PostgreSqlStudentDao(DaoFactory daoFactory) {

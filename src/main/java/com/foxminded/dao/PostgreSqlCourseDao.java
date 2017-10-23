@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.university.Course;
 
-public class PostgreSqlCourseDao extends AbstractJDBCDao<Course, Integer>{
+public class PostgreSqlCourseDao extends AbstractPostgreSqlDao<Course, Integer>{
 
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
@@ -40,6 +40,7 @@ public class PostgreSqlCourseDao extends AbstractJDBCDao<Course, Integer>{
 		List<String> sql = new ArrayList<>();		
 		sql.add("DELETE FROM Professors_Courses WHERE course_id = ?;");
 		sql.add("DELETE FROM Groups_Courses WHERE course_id = ?;");
+		sql.add("UPDATE \"ScheduleSlots\" SET course_id = null WHERE course_id = ?;");
 		sql.add("DELETE FROM \"Courses\" WHERE id= ?;");
 		return sql;
 	}

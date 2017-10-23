@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.foxminded.university.Room;
 
-public class PostgreSqlRoomDao extends AbstractJDBCDao<Room, Integer>{
+public class PostgreSqlRoomDao extends AbstractPostgreSqlDao<Room, Integer>{
 	
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
@@ -38,6 +38,7 @@ public class PostgreSqlRoomDao extends AbstractJDBCDao<Room, Integer>{
 	@Override
 	public List<String> getDeleteQuery() {
 		List<String> sql = new ArrayList<>();
+		sql.add("UPDATE \"ScheduleSlots\" SET room_id = null WHERE room_id = ?;");
 		sql.add("DELETE FROM \"Rooms\" WHERE id= ?;");
 		return sql;
 	}

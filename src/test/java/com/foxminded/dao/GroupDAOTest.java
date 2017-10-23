@@ -5,8 +5,13 @@ import java.util.List;
 import main.java.com.foxminded.dao.DaoFactory;
 import main.java.com.foxminded.dao.PersistException;
 import main.java.com.foxminded.dao.PostgreSqlGroupDao;
+import main.java.com.foxminded.dao.PostgreSqlScheduleSlotDao;
+import main.java.com.foxminded.schedule.ScheduleSlot;
+import main.java.com.foxminded.schedule.TimeUnit;
 import main.java.com.foxminded.university.Course;
 import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.Room;
+import main.java.com.foxminded.university.person.Professor;
 import main.java.com.foxminded.university.person.Student;
 
 import org.junit.After;
@@ -143,7 +148,16 @@ public class GroupDAOTest {
 	@Test
 	public void testDelete() throws PersistException {
 		try {
-			group = dao.create("IPSA");			
+			TimeUnit time = daoFactory.getTimeUnitDao().getByPK(2);
+			Room room = daoFactory.getRoomDao().getByPK(1);
+			Course course = daoFactory.getCourseDao().getByPK(3);				
+			Professor prof = daoFactory.getProfessorDao().getByPK(3);
+			
+			group = dao.create("IPSA");
+			
+			PostgreSqlScheduleSlotDao daoSS = daoFactory.getScheduleSlotDao();
+			ScheduleSlot scheduleSlot = daoSS.create(time, room, course, prof, group);
+			Assert.assertNotNull(scheduleSlot.getId());
 
 	        List<Group> list = dao.getAll();
 	        Assert.assertNotNull(list);
@@ -158,6 +172,10 @@ public class GroupDAOTest {
 
 	        int newSize = list.size();
 	        Assert.assertEquals(1, oldSize - newSize);
+	        
+	        ScheduleSlot newSS = daoSS.getByPK(scheduleSlot.getId());
+	        Assert.assertEquals(null, newSS.getGroup());	        
+	        daoSS.delete(scheduleSlot);
 	        
 		} catch (Exception e) {
             throw new PersistException(e);
