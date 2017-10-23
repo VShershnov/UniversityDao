@@ -39,7 +39,7 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	@Override
 	public String getInsertDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "INSERT INTO " + T.getSimpleName() + "s_" 
-				+ K1.getSimpleName() + "s (" + K1.getSimpleName() + "_id, " + T.getSimpleName() + "_id) VALUES (?, ?);";
+				+ K1.getSimpleName() + "s (" + T.getSimpleName() + "_id, " + K1.getSimpleName() + "_id) VALUES (?, ?);";
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	@Override
 	public String getDeleteDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "DELETE FROM " + T.getSimpleName() + "s_"  + K1.getSimpleName() + "s WHERE " 
-				+ K1.getSimpleName() + "_id=? AND " + T.getSimpleName() + "_id=? ;";
+				+ T.getSimpleName() + "_id=? AND " + K1.getSimpleName() + "_id=? ;";
 	}
 	
 	@Override

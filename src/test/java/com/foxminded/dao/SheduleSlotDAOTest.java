@@ -72,21 +72,29 @@ public class SheduleSlotDAOTest {
 			scheduleSlot = dao.create(time, room, course, prof, group);
 						
 		    Assert.assertNotNull(scheduleSlot.getId());
-		    
+		    dao.delete(scheduleSlot);
 		    
 	    } catch (Exception e) {
             throw new PersistException(e);
         }		
 	}
 
-	/*
+	
 	@Test
 	public void testGetByPK() throws PersistException {
-		 int id = dao.create(10, 18, 10).getId();
+		time = daoFactory.getTimeUnitDao().getByPK(4);
+		room = daoFactory.getRoomDao().getByPK(4);
+		course = daoFactory.getCourseDao().getByPK(3);
+		prof = new Professor(3, "Stepanova");
+		group = daoFactory.getGroupDao().getByPK(3);
+		
+		 int id = dao.create(time, room, course, prof, group).getId();
 		 scheduleSlot = dao.getByPK(id);
-	        Assert.assertNotNull(scheduleSlot);
-	}
-
+	     
+		 Assert.assertNotNull(scheduleSlot);
+		 dao.delete(scheduleSlot);	     
+	}	
+	
 	@Test
 	public void testGetAll() throws PersistException{
 		
@@ -99,7 +107,7 @@ public class SheduleSlotDAOTest {
 	    Assert.assertNotNull(list);
 	    Assert.assertTrue(list.size() > 0);	
 	}
-
+/*
 	@Test
 	public void testUpdate() throws PersistException {
 		ScheduleSlot ss = new ScheduleSlot(13, 12, 5, 10);

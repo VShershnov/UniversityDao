@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.foxminded.university.Group;
+import main.java.com.foxminded.university.person.Student;
 
 public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	
@@ -26,8 +27,13 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	 */
 	@Override
 	public String getSelectDependentObjQuery(Class<?> K1, Class<?> T){
-		return "SELECT " + K1.getSimpleName() + "_id FROM " + T.getSimpleName() + "s_" 
-						+ K1.getSimpleName() + "s WHERE " + T.getSimpleName() + "_id = ?";
+		String sqlCourse = "SELECT " + K1.getSimpleName() + "_id FROM " + T.getSimpleName() + "s_" 
+				+ K1.getSimpleName() + "s WHERE " + T.getSimpleName() + "_id = ?"
+				;
+		String sqlStudent = "SELECT " + K1.getSimpleName() + "_id FROM " 
+				+ K1.getSimpleName() + "s WHERE " + T.getSimpleName() + "_id = ?";
+		
+		return K1.getClass().equals(Student.class) ? sqlStudent : sqlCourse;
 	}
 	
 	/**
@@ -38,8 +44,14 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	 */
 	@Override
 	public String getInsertDependentObjQuery(Class<?> K1, Class<?> T) {		
-		return "INSERT INTO " + T.getSimpleName() + "s_" 
-				+ K1.getSimpleName() + "s (" + K1.getSimpleName() + "_id, " + T.getSimpleName() + "_id) VALUES (?, ?);";
+		String sqlCourse = "INSERT INTO " + T.getSimpleName() 
+				+ "s_" + K1.getSimpleName() + "s (" + T.getSimpleName() + "_id, " 
+				+ K1.getSimpleName() + "_id) VALUES (?, ?);";
+		
+		String sqlStudent = "UPDATE " + K1.getSimpleName() + "s SET " 
+				+ T.getSimpleName() + "_id = ? WHERE " + K1.getSimpleName() + "_id = ?;";
+		
+		return K1.getClass().equals(Student.class) ? sqlStudent : sqlCourse;
 	}
 
 	/**
@@ -50,8 +62,12 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	 */
 	@Override
 	public String getDeleteDependentObjQuery(Class<?> K1, Class<?> T) {		
-		return "DELETE FROM " + T.getSimpleName() + "s_"  + K1.getSimpleName() + "s WHERE " 
-				+ K1.getSimpleName() + "_id=? AND " + T.getSimpleName() + "_id=? ;";
+		String sqlCourse = "DELETE FROM " + T.getSimpleName() + "s_"  + K1.getSimpleName() + "s WHERE " 
+				+ T.getSimpleName() + "_id= ? AND " + K1.getSimpleName() + "_id=? ;";
+		String sqlStudent = "UPDATE " + K1.getSimpleName() + "s SET " 
+				+ T.getSimpleName() + "_id = null WHERE " + T.getSimpleName() + "_id= ? AND " + K1.getSimpleName() + "_id=?;";
+		
+		return K1.getClass().equals(Student.class) ? sqlStudent : sqlCourse;
 	}
 	
 	@Override
@@ -71,6 +87,7 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 		sql.add("DELETE FROM Groups_Students WHERE group_id = ?;");
 		sql.add("DELETE FROM Groups_Courses WHERE group_id = ?;");
 		sql.add("UPDATE \"ScheduleSlots\" SET group_id = null WHERE group_id = ?;");
+		sql.add("UPDATE \"Students\" SET group_id = null WHERE group_id = ?;");
 		sql.add("DELETE FROM \"Groups\" WHERE id= ?;");
 		return sql;
 	}

@@ -337,8 +337,8 @@ public abstract class AbstractPostgreSqlDao<T extends Identified <PK>, PK extend
 			PreparedStatement statement, Object dependentObj, T object) throws PersistException {
 		try {           
 			log.debug("Prepare Statement for insert/delete to DB");
-			statement.setInt(1, ((Identified<PK>) dependentObj).getId());
-            statement.setInt(2, object.getId());
+			statement.setInt(2, ((Identified<PK>) dependentObj).getId());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
         	log.error("Cannot create Statement for insert/delete ", e);
         	throw new PersistException(e);
@@ -369,7 +369,7 @@ public abstract class AbstractPostgreSqlDao<T extends Identified <PK>, PK extend
 	 */
 	public String getInsertDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "INSERT INTO " + K1.getSimpleName() + "s_" 
-				+ T.getSimpleName() + "s (" + K1.getSimpleName() + "_id, " + T.getSimpleName() + "_id) VALUES (?, ?);";
+				+ T.getSimpleName() + "s (" + T.getSimpleName() + "_id, " + K1.getSimpleName() + "_id) VALUES (?, ?);";
 	}
 
 	/**
@@ -380,7 +380,7 @@ public abstract class AbstractPostgreSqlDao<T extends Identified <PK>, PK extend
 	 */
 	public String getDeleteDependentObjQuery(Class<?> K1, Class<?> T) {		
 		return "DELETE FROM " + K1.getSimpleName() + "s_"  + T.getSimpleName() + "s WHERE " 
-				+ K1.getSimpleName() + "_id=? AND " + T.getSimpleName() + "_id=? ;";
+				+ T.getSimpleName() + "_id=? AND " + K1.getSimpleName() + "_id=? ;";
 	}
 	
 	/**
