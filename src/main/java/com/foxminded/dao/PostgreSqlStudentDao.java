@@ -89,7 +89,6 @@ public class PostgreSqlStudentDao extends AbstractPostgreSqlDao<Student, Integer
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
 			Student object) throws PersistException {
-
         try {
         	log.debug("Prepare Statement for update to DB");
             statement.setString(1, object.getFullName());

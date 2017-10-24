@@ -214,8 +214,7 @@ public abstract class AbstractPostgreSqlDao<T extends Identified <PK>, PK extend
         	log.error("Cannot delete Object " + object.toString(), e);
             throw new PersistException(e);
         }
-    }
-    
+    }    
    
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();

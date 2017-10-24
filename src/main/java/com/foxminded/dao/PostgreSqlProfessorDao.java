@@ -5,9 +5,15 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.university.person.Professor;
 
 public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Integer> {
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 
 	public PostgreSqlProfessorDao(DaoFactory daoFactory) {
 		super(daoFactory);
@@ -75,6 +81,7 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	}
 
 	public Professor create(String name) throws PersistException{
+		log.info("Creating new professor " + name);
 		Professor prof = new Professor(null, name);
         return persist(prof);
 	}
@@ -83,14 +90,18 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	protected List<Professor> parseResultSet(ResultSet rs)
 			throws PersistException {
 		List<Professor> result = new ArrayList<Professor>();
+		log.debug("Parse Result Set from DB to Object's List");
         try {
             while (rs.next()) {
+            	if(log.isEnabled(Level.TRACE))
+            		log.trace("Parse row " + rs.getInt("id") + " to Professor Object");
             	Professor prof = new Professor();
             	prof.setId(rs.getInt("id"));
             	prof.setFullName(rs.getString("fullname"));               
                 result.add(prof);
             }
         } catch (Exception e) {
+        	log.error("Cannot parse Object ", e);
             throw new PersistException(e);
         }
         return result;
@@ -100,8 +111,10 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	protected void prepareStatementForInsert(PreparedStatement statement,
 			Professor object) throws PersistException {
 		try {
+			log.debug("Prepare Statement for insert to DB");
             statement.setString(1, object.getFullName());
         } catch (Exception e) {
+        	log.error("Cannot create Statement for insert ", e);
             throw new PersistException(e);
         }	
 	}
@@ -110,9 +123,11 @@ public class PostgreSqlProfessorDao extends AbstractPostgreSqlDao<Professor, Int
 	protected void prepareStatementForUpdate(PreparedStatement statement,
 			Professor object) throws PersistException {
 		try {
+			log.debug("Prepare Statement for update to DB");
 			statement.setString(1, object.getFullName());            
             statement.setInt(2, object.getId());
         } catch (Exception e) {
+        	log.error("Cannot create Statement for update ", e);
             throw new PersistException(e);
         }	
 	}

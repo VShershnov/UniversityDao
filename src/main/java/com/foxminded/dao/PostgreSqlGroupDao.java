@@ -5,10 +5,16 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.university.Group;
 import com.foxminded.university.person.Student;
 
 public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	public PostgreSqlGroupDao(DaoFactory daoFactory) {
 		super(daoFactory);
@@ -93,6 +99,7 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	}
 	
 	public Group create(String name) throws PersistException{
+		log.info("Creating new group " + name);
 		Group g = new Group(null, name);
         return persist(g);
 	}
@@ -100,14 +107,18 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	@Override
 	protected List<Group> parseResultSet(ResultSet rs) throws PersistException {
 		List<Group> result = new ArrayList<Group>();
+		log.debug("Parse Result Set from DB to Object's List");
         try {
             while (rs.next()) {
+            	if(log.isEnabled(Level.TRACE))
+            		log.trace("Parse row " + rs.getInt("id") + " to Group Object");
                 Group group = new Group();
                 group.setId(rs.getInt("id"));
                 group.setName(rs.getString("name"));               
                 result.add(group);
             }
         } catch (Exception e) {
+        	log.error("Cannot parse Object ", e);
             throw new PersistException(e);
         }
         return result;
@@ -117,9 +128,11 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	protected void prepareStatementForInsert(PreparedStatement statement,
 			Group object) throws PersistException {
 		try {
+			log.debug("Prepare Statement for insert to DB");
             statement.setString(1, object.getName());
         } catch (Exception e) {
-            throw new PersistException(e);
+        	log.error("Cannot create Statement for insert ", e);
+        	throw new PersistException(e);
         }		
 	}
 
@@ -127,10 +140,12 @@ public class PostgreSqlGroupDao extends AbstractPostgreSqlDao<Group, Integer>{
 	protected void prepareStatementForUpdate(PreparedStatement statement,
 			Group object) throws PersistException {
 		try {
+			log.debug("Prepare Statement for update to DB");
 			statement.setString(1, object.getName());            
             statement.setInt(2, object.getId());
         } catch (Exception e) {
-            throw new PersistException(e);
+        	log.error("Cannot create Statement for update ", e);
+        	throw new PersistException(e);
         }		
 	}	
 }

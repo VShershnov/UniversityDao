@@ -11,11 +11,10 @@ public class DaoFactory{
 	
 	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
+	//URL אהנוס
 	private String url = "jdbc:postgresql://[::1]:5432/University?user=postgres&password=1111";
 	private String driver = "org.postgresql.Driver";//Èלÿ הנאיגונא
-   // private String url = "jdbc:PostgreSql:UniversityDAO.db";//URL אהנוס"
-    //private String driver = "org.PostgreSql.JDBC";//Èלÿ הנאיגונא
-	
+   	
 	public Connection getConnection() throws PersistException{
 		Connection connection = null;
 		try {
@@ -61,7 +60,7 @@ public class DaoFactory{
 			log.trace("register jdbc driver");
             Class.forName(driver);//Ðודטסענטנףול הנאיגונ
         } catch (ClassNotFoundException e) {
-        	log.error("Cannot find מגטס driver ", e);
+        	log.error("Cannot find jdbc driver ", e);
             e.printStackTrace();
         }
     }
