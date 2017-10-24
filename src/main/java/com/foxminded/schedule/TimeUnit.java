@@ -1,8 +1,13 @@
 package com.foxminded.schedule;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.dao.Identified;
 
 public class TimeUnit implements Identified<Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Integer id;
 	private Integer day;
@@ -56,6 +61,7 @@ public class TimeUnit implements Identified<Integer>{
 	
 	@Override
 	public int hashCode() {
+		log.debug("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((day == null) ? 0 : day.hashCode());
@@ -67,6 +73,7 @@ public class TimeUnit implements Identified<Integer>{
 
 	@Override
 	public boolean equals(Object obj) {
+		log.debug("Use equals");		
 		if (this == obj)
 			return true;
 		if (obj == null)

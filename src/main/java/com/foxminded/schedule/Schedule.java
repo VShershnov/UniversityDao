@@ -3,6 +3,9 @@ package com.foxminded.schedule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.schedule.Schedule;
 import com.foxminded.schedule.ScheduleSlot;
 import com.foxminded.university.Course;
@@ -13,6 +16,8 @@ import com.foxminded.university.person.Student;
 
 public class Schedule {
 
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
+	
 	private List<ScheduleSlot> scheduleSlots;	
 	
 	public Schedule() {
@@ -53,6 +58,7 @@ public class Schedule {
 	}
 
 	public void removeGroupFromScheduleSlots(Group group) {
+		log.info("Remove(set null) group " + group + " from all ScheduleSlots");
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getGroup()!=null && ss.getGroup().equals(group))
 				ss.setGroup(null);			
@@ -60,6 +66,7 @@ public class Schedule {
 	}
 
 	public void removeCourseFromScheduleSlots(Course course) {
+		log.info("Remove(set null) course " + course + " from all ScheduleSlots");
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getCourse()!=null && ss.getCourse().equals(course))
 				ss.setCourse(null);			
@@ -67,6 +74,7 @@ public class Schedule {
 	}
 
 	public void removeProfessorFromScheduleSlots(Professor prof) {
+		log.info("Remove(set null) professor " + prof + " from all ScheduleSlots");
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getProfessor()!=null && ss.getProfessor().equals(prof))
 				ss.setProfessor(null);			
@@ -74,6 +82,7 @@ public class Schedule {
 	}
 
 	public void removeRoomFromScheduleSlots(Room room) {
+		log.info("Remove(set null) room " + room + " from all ScheduleSlots");
 		for(ScheduleSlot ss: scheduleSlots){
 			if(ss.getRoom()!=null && ss.getRoom().equals(room))
 				ss.setRoom(null);				
@@ -82,6 +91,7 @@ public class Schedule {
 	
 	public Schedule getDailyScheduleForProfessor(Integer day, Professor prof){
 		Schedule schedule = new Schedule();
+		log.info("Form Professor " + prof + "daily Schedule, day " + day);
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getProfessor()!=null && ss.getProfessor().equals(prof) && ss.getTime().getDay().equals(day))
 				schedule.addSchedulerSlot(ss);			
@@ -91,6 +101,7 @@ public class Schedule {
 	
 	public Schedule getDailyScheduleForStudent(Integer day, Student student){
 		Schedule schedule = new Schedule();
+		log.info("Form Student " + student + "daily Schedule, day " + day);
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getGroup()!=null && student.equals(ss.getGroup().getStudent(student)) && ss.getTime().getDay().equals(day))
 						schedule.addSchedulerSlot(ss);			
@@ -100,6 +111,7 @@ public class Schedule {
 	
 	public Schedule getMonthlyScheduleForProfessor(Integer month, Professor prof){
 		Schedule schedule = new Schedule();
+		log.info("Form Professor " + prof + "monthly Schedule, month " + month);
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getProfessor()!=null && ss.getProfessor().equals(prof) && ss.getTime().getMonth().equals(month))
 				schedule.addSchedulerSlot(ss);			
@@ -109,6 +121,7 @@ public class Schedule {
 	
 	public Schedule getMonthlyScheduleForStudent(Integer month, Student student){
 		Schedule schedule = new Schedule();
+		log.info("Form Student " + student + "monthly Schedule, month " + month);
 		for(ScheduleSlot ss: scheduleSlots){			
 			if(ss.getGroup()!=null && student.equals(ss.getGroup().getStudent(student)) && ss.getTime().getMonth().equals(month))
 				schedule.addSchedulerSlot(ss);			
