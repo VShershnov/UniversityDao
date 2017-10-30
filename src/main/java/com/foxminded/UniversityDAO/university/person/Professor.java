@@ -3,11 +3,15 @@ package com.foxminded.UniversityDAO.university.person;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.university.person.Professor;
 import com.foxminded.UniversityDAO.university.Course;
 
 public class Professor extends UniversityPerson{
-
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 
 	//Set of professor teaching courses
 	private Set<Course> courses;
@@ -28,6 +32,7 @@ public class Professor extends UniversityPerson{
 	}
 	
 	public void removeCourse(Course course){
+		log.info("Remove course " + course + " from professor " + toString());
 		courses.remove(course);
 	}
 	
@@ -36,6 +41,7 @@ public class Professor extends UniversityPerson{
 	}
 
 	public Course getCourse(Course course) {
+		log.info("Get course " + course + " from professor " + toString());
 		for (Course c: courses){
 			if (c.equals(course))
 				return c;
@@ -44,6 +50,7 @@ public class Professor extends UniversityPerson{
 	}
 
 	public void removeProfessorFromProfessorCourses(Professor prof) {
+		log.info("Remove professor " + prof + " from professor courses");
 		for (Course c: courses){
 			c.getProfessors().remove(prof);
 		}		

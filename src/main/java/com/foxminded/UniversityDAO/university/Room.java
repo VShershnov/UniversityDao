@@ -1,8 +1,13 @@
 package com.foxminded.UniversityDAO.university;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.dao.Identified;
 
 public class Room implements Identified<Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Integer id;
 	private Integer capacity;
@@ -46,6 +51,7 @@ public class Room implements Identified<Integer>{
 	
 	@Override
 	public int hashCode() {
+		log.trace("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
@@ -57,6 +63,7 @@ public class Room implements Identified<Integer>{
 
 	@Override
 	public boolean equals(Object obj) {
+		log.trace("Use equals");
 		if (this == obj)
 			return true;
 		if (obj == null)

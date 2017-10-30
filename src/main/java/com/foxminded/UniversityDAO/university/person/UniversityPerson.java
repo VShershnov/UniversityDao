@@ -1,8 +1,13 @@
 package com.foxminded.UniversityDAO.university.person;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.dao.Identified;
 
 public class UniversityPerson implements Identified<Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Integer id;
 	private String fullName;
@@ -22,6 +27,7 @@ public class UniversityPerson implements Identified<Integer>{
 	}
 	@Override
 	public int hashCode() {
+		log.trace("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -31,6 +37,7 @@ public class UniversityPerson implements Identified<Integer>{
 	}
 	@Override
 	public boolean equals(Object obj) {
+		log.trace("Use equals");	
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -49,7 +56,5 @@ public class UniversityPerson implements Identified<Integer>{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	
+	}	
 }

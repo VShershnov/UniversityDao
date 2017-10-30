@@ -3,6 +3,9 @@ package com.foxminded.UniversityDAO.university;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.university.Course;
 import com.foxminded.UniversityDAO.university.Group;
 import com.foxminded.UniversityDAO.dao.Identified;
@@ -10,6 +13,8 @@ import com.foxminded.UniversityDAO.university.person.Student;
 
 
 public class Group implements Identified<Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Integer id;
 	private String name;
@@ -86,12 +91,14 @@ public class Group implements Identified<Integer>{
 	}
 
 	public void removeStudent(Student student) {
+		log.info("Remove student " + student + " from Group" + toString());
 		if (students.contains(student)) {
 			students.remove(student);
 		}
 	}	
 	
 	public void removeCourse(Course course) {
+		log.info("Remove course " + course + " from Group" + toString());
 		if(courses.contains(course)){
 			for (Group g : course.getGroups()) {
 				g.getCourses().remove(course);
@@ -109,12 +116,14 @@ public class Group implements Identified<Integer>{
 	}
 
 	public void removeGroupFromGroupStudents() {
+		log.info("Remove group " + toString() + " from group students (set group = null");
 		for (Student s: students){
 			s.setGroup(null);
 		}		
 	}
 
 	public void removeGroupFromGroupCourses(Group group) {
+		log.info("Remove group " + group + " from group courses");
 		for (Course c: courses){
 			c.getGroups().remove(group);
 		}		
@@ -122,6 +131,7 @@ public class Group implements Identified<Integer>{
 
 	@Override
 	public int hashCode() {
+		log.trace("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -131,6 +141,7 @@ public class Group implements Identified<Integer>{
 
 	@Override
 	public boolean equals(Object obj) {
+		log.trace("Use equals");	
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -149,7 +160,5 @@ public class Group implements Identified<Integer>{
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-	
-	
+	}	
 }

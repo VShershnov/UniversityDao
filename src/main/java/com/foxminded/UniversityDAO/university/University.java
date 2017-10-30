@@ -3,6 +3,9 @@ package com.foxminded.UniversityDAO.university;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.university.Course;
 import com.foxminded.UniversityDAO.university.Group;
 import com.foxminded.UniversityDAO.university.Room;
@@ -11,6 +14,8 @@ import com.foxminded.UniversityDAO.university.person.Professor;
 import com.foxminded.UniversityDAO.university.person.Student;
 
 public class University {
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Integer id;
 	
@@ -71,19 +76,20 @@ public class University {
 		if(student!=null && group!=null){
 			if (!allGroups.contains(group)){
 				allGroups.add(group);
-				System.out.println("To University #" + id + " added NEW " + group + "\n");
+				log.info("To University #" + id + " added NEW " + group);				
 			}		
 			
 			//remove student from previous group 
-			if(student.getGroup()!=null)
+			if(student.getGroup()!=null){
+				log.info("remove student " + student + " from previous group " + group);	
 				getGroup(getStudent(student).getGroup()).removeStudent(student);
-			
+			}
 			
 			student.setGroup(group);
 			
 			if (!allStudents.contains(student)){
 				allStudents.add(student);
-				System.out.println("To University #" + id + " added NEW " + student + "\n");
+				log.info("To University #" + id + " added NEW " + student);
 			}
 			
 			getGroup(group).addStudent(student);	
@@ -96,14 +102,12 @@ public class University {
 		if(course!=null && group!=null){
 			if (!allGroups.contains(group)) {
 				allGroups.add(group);
-				System.out.println("To University #" + id + " added NEW " + group
-						+ "\n");
+				log.info("To University #" + id + " added NEW " + group);				
 			}
 	
 			if (!allCourses.contains(course)) {
 				allCourses.add(course);
-				System.out.println("To University #" + id + " added NEW " + course
-						+ "\n");
+				log.info("To University #" + id + " added NEW " + course);
 			}
 	
 			getGroup(group).addCourse(course);
@@ -116,14 +120,12 @@ public class University {
 		if(course!=null && prof!=null){
 			if (!allProfessors.contains(prof) && prof!=null) {
 				allProfessors.add(prof);
-				System.out.println("To University #" + id + " added NEW " + prof
-						+ "\n");
+				log.info("To University #" + id + " added NEW " + prof);				
 			}
 	
 			if (!allCourses.contains(course) && course!=null) {
 				allCourses.add(course);
-				System.out.println("To University #" + id + " added NEW " + course
-						+ "\n");
+				log.info("To University #" + id + " added NEW " + course);				
 			}
 	
 			getProfessor(prof).addCourse(course);

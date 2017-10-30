@@ -1,9 +1,14 @@
 package com.foxminded.UniversityDAO.university.person;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.university.person.Student;
 import com.foxminded.UniversityDAO.university.Group;
 
 public class Student extends UniversityPerson {
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 	
 	private Group group;
 	
@@ -38,6 +43,7 @@ public class Student extends UniversityPerson {
 	}
 
 	public void removeStudentFromStudentGroup(Student student) {
+		log.info("Remove student " + toString() + " from student groups");
 		group.getStudents().remove(student);
 	}
 

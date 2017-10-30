@@ -99,7 +99,7 @@ public class ScheduleSlot implements Identified<Integer> {
 
 	@Override
 	public int hashCode() {
-		log.debug("Use hashCode");
+		log.trace("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((course == null) ? 0 : course.hashCode());
@@ -114,7 +114,7 @@ public class ScheduleSlot implements Identified<Integer> {
 
 	@Override
 	public boolean equals(Object obj) {
-		log.debug("Use equals");
+		log.trace("Use equals");
 		if (this == obj)
 			return true;
 		if (obj == null)

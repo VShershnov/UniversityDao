@@ -3,12 +3,17 @@ package com.foxminded.UniversityDAO.university;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.foxminded.UniversityDAO.university.Course;
 import com.foxminded.UniversityDAO.university.Group;
 import com.foxminded.UniversityDAO.dao.Identified;
 import com.foxminded.UniversityDAO.university.person.Professor;
 
 public class Course implements Identified<Integer>{
+	
+	private final  Logger log = LogManager.getLogger(this.getClass().getPackage().getName());
 
 	//Course id and duration in hours
 	private Integer id;
@@ -99,12 +104,14 @@ public class Course implements Identified<Integer>{
 	}
 
 	public void removeCourseFromCourseGroups(Course course) {
+		log.info("Remove course " + course + " from course groups");
 		for (Group g: groups){
 			g.getCourses().remove(course);
 		}		
 	}
 
 	public void removeCourseFromCourseProfessors(Course course) {
+		log.info("Remove course " + course + " from course professors");
 		for (Professor p: professors){
 			p.getCourses().remove(course);
 		}		
@@ -112,6 +119,7 @@ public class Course implements Identified<Integer>{
 
 	@Override
 	public int hashCode() {
+		log.trace("Use hashCode");
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -123,6 +131,7 @@ public class Course implements Identified<Integer>{
 
 	@Override
 	public boolean equals(Object obj) {
+		log.trace("Use equals");	
 		if (this == obj)
 			return true;
 		if (obj == null)
